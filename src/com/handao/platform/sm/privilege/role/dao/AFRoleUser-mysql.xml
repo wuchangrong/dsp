@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="common.sm.privilege.role.RoleUser">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="AFRoleUserVO" type="com.handao.platform.sm.privilege.role.vo.AFRoleUserVO"/>
+ 
+  <resultMap id="AFRoleUserResult" class="AFRoleUserVO">
+    <result property="smur_USER_ID" column="smur_USER_ID" nullValue="-1" />
+    <result property="smur_USER_NAME" column="smur_USER_NAME" />
+    <result property="smur_COMPANY_ID" column="smur_COMPANY_ID" />
+  </resultMap>
+
+  <statement id="[search-by-condition]" resultMap="AFRoleUserResult">
+    <![CDATA[
+    SELECT smur.USER_ID smur_USER_ID,smu.USER_NAME smur_USER_NAME,smu.COMPANY_ID smur_COMPANY_ID  
+    	FROM SM_USER_ROLE smur,SM_USER smu  
+    	WHERE smur.DELETED_FLAG = '0' and smur.USER_ID = smu.ROW_ID and smu.deleted_flag = '0' and smu.using_flag = '1'  
+    ]]>
+    <isNotEmpty prepend="and" property="smur_ROLE_ID">
+      <![CDATA[SMUR.ROLE_ID = #smur_ROLE_ID#]]>
+    </isNotEmpty>  
+  </statement>
+    
+  <statement id="[search-by-masterid-whenordinary]" parameterClass="long" resultMap="AFRoleUserResult">
+    <![CDATA[
+    SELECT smu.ROW_ID smur_USER_ID,concat(ifnull(md.SHORT_NAME,'无'),'-',smu.user_code,'-',smu.USER_NAME) smur_USER_NAME,smu.COMPANY_ID smur_COMPANY_ID 
+    FROM SM_USER smu left join md_company md on smu.company_id=md.row_id
+    WHERE smu.deleted_flag = '0' and smu.using_flag = '1' 
+    	and smu.ATTR_FLAG = '0' and smu.row_id not in(select user_id from sm_user_role where role_id = #value#)
+    ORDER BY md.sort_code,smu.user_code
+    ]]>
+  </statement>
+    
+  <statement id="[delete-by-masterid]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SM_USER_ROLE   
+    WHERE ROLE_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[search-by-masterid-whensuper]" parameterClass="long" resultMap="AFRoleUserResult">
+    <![CDATA[
+    SELECT smu.ROW_ID smur_USER_ID,concat(ifnull(md.SHORT_NAME,'无'),'-',smu.user_code,'-',smu.USER_NAME) smur_USER_NAME,smu.COMPANY_ID smur_COMPANY_ID 
+    FROM SM_USER smu left join md_company md on smu.company_id=md.row_id 
+    WHERE smu.deleted_flag = '0' and smu.using_flag = '1' 
+    	and smu.ATTR_FLAG = '1' and smu.row_id not in(select user_id from sm_user_role where role_id = #value#)
+    ORDER BY md.sort_code,smu.user_code
+    ]]>
+  </statement>
+    
+  <statement id="[search-by-masterid-whenadmin]" parameterClass="long" resultMap="AFRoleUserResult">
+    <![CDATA[
+    SELECT smu.ROW_ID smur_USER_ID,concat(ifnull(md.SHORT_NAME,'无'),'-',smu.user_code,'-',smu.USER_NAME) smur_USER_NAME,smu.COMPANY_ID smur_COMPANY_ID 
+    FROM SM_USER smu left join md_company md on smu.company_id=md.row_id 
+    WHERE smu.deleted_flag = '0' and smu.using_flag = '1' 
+    	and smu.ATTR_FLAG = '0' and smu.row_id not in(select user_id from sm_user_role where role_id = #value#)
+    ORDER BY md.sort_code,smu.user_code
+    ]]>
+  </statement>
+    
+  <statement id="[search-by-masterid-whendebug]" parameterClass="long" resultMap="AFRoleUserResult">
+    <![CDATA[
+    SELECT smu.ROW_ID smur_USER_ID,concat(ifnull(md.SHORT_NAME,'无'),'-',smu.user_code,'-',smu.USER_NAME) smur_USER_NAME,smu.COMPANY_ID smur_COMPANY_ID 
+    FROM SM_USER smu left join md_company md on smu.company_id=md.row_id  
+    WHERE smu.deleted_flag = '0' and smu.using_flag = '1' 
+        and smu.row_id not in(select user_id from sm_user_role where role_id = #value#)
+    ORDER BY md.sort_code,smu.user_code
+    ]]>
+  </statement>
+    
+    <statement id="[search-by-masterid]" parameterClass="long" resultMap="AFRoleUserResult">
+    <![CDATA[
+    SELECT smur.USER_ID smur_USER_ID,concat(ifnull(md.SHORT_NAME,'无'),'-',smu.user_code,'-',smu.USER_NAME) smur_USER_NAME,smu.COMPANY_ID smur_COMPANY_ID 
+    FROM SM_USER_ROLE smur,SM_USER smu left join md_company md on smu.company_id=md.row_id 
+    WHERE smur.DELETED_FLAG = '0' and smur.user_id = smu.row_id AND smur.ROLE_ID = #value#
+    ORDER BY md.sort_code,smu.user_code    	
+    ]]>
+    </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="AFRoleUserResult">
+    <![CDATA[
+    SELECT smur.ROW_ID smur_ROW_ID,smur.USER_ID smur_USER_ID,smur.ROLE_ID smur_ROLE_ID,smu.USER_NAME smur_USER_NAME,smu.COMPANY_ID smur_COMPANY_ID  
+    	FROM SM_USER_ROLE smur,SM_USER smu  
+    	WHERE smur.DELETED_FLAG = '0' and smur.USER_ID = smu.ROW_ID and smu.deleted_flag = '0' and smu.using_flag = '1' AND smur.ROW_ID = #value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SM_USER_ROLE    
+    WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="AFRoleUserVO">
+    <![CDATA[
+    UPDATE SM_USER_ROLE  
+    SET ROLE_ID=#smur_ROLE_ID#,USER_ID=#smur_USER_ID#,LAST_UPD_BY=#_userID#,LAST_UPD_DATE=current_date,MODIFICATION_NUM=MODIFICATION_NUM+1 
+    WHERE ROW_ID=#smur_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="AFRoleUserVO">
+    <![CDATA[
+    INSERT INTO SM_USER_ROLE(ROLE_ID,USER_ID,DELETED_FLAG,ORIGIN_FLAG,ORIGIN_APP,CREATED_BY,CREATED_DATE) 
+    VALUES(#smur_ROLE_ID#,#smur_USER_ID#,'0',#_originFlag#,#_originApp#,#_userID#,current_date)
+    ]]>
+  </statement>
+  
+
+</sqlMap>

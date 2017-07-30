@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+    <!-- ========== Form Bean Definitions =================================== -->
+    <form-beans>
+        <form-bean name="md_directory_DireautForm" type="com.handao.dsp.md.directory.direaut.web.DireautForm"/>        
+
+    </form-beans>
+    <!-- ========== End of Form Bean Definitions =================================== -->
+    <!-- ========== Action Mapping Definitions ============================== -->
+    <action-mappings>
+	      <action name="md_directory_DireautForm" parameter="method" path="/md/directory/direaut/Direaut" type="com.handao.dsp.md.directory.direaut.web.DireautAction">
+            <forward name="list" path="/jsp/dsp/md/directory/direaut/DireautList.jsp" />
+            <forward name="list.do" path="/md/directory/direaut/Direaut.do?method=doSearch"/>
+            <forward name="addIni.do" path="/md/directory/direaut/Direaut.do?method=doAddIni&amp;doWhat=add"/>
+            <forward name="editIni.do" path="/md/directory/direaut/Direaut.do?method=doEditIni&amp;doWhat=edit"/>
+            <forward name="addEdit" path="/jsp/dsp/md/directory/direaut/DireautAddEdit.jsp?method=doAddEditIni"/>
+            <forward name="view" path="/jsp/dsp/md/directory/direaut/DireautView.jsp?method=doView"/>
+        </action>                
+
+	  </action-mappings>
+    <!-- ========== End of Action Mapping Definitions ============================== -->
+	<message-resources key="dsp.md.directory.direaut"  parameter="com.handao.dsp.md.directory.direaut.web.MessageMapping"/>
+
+</struts-config>

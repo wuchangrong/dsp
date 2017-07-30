@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="common.sm.privilege.user.UserRole">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="AFUserRoleVO" type="com.handao.platform.sm.privilege.user.vo.AFUserRoleVO"/>
+ 
+  <resultMap id="AFUserRoleResult" class="AFUserRoleVO">
+    <result property="smur_ROW_ID" column="smur_ROLE_ID" nullValue="-1" />
+    <result property="smur_USER_ID" column="smur_ROLE_ID" nullValue="-1" />
+    <result property="smur_ROLE_ID" column="smur_ROLE_ID" nullValue="-1" />
+    <result property="smur_ROLE_NAME" column="smur_ROLE_NAME" />
+  </resultMap>
+  
+  <statement id="[search-by-masterid-whenordinary]" parameterClass="long" resultMap="AFUserRoleResult">
+    <![CDATA[
+    SELECT smur.ROW_ID smur_ROW_ID,smur.USER_ID smur_USER_ID,smur.ROLE_ID smur_ROLE_ID,concat(smr.ROLE_CODE,'-',smr.ROLE_NAME) smur_ROLE_NAME 
+    FROM SM_USER_ROLE smur,SM_ROLE smr 
+    WHERE smur.DELETED_FLAG = '0' and smur.ROLE_ID = smr.ROW_ID AND smur.USER_ID = #value#
+    	AND smr.ATTR_FLAG = '0' AND smr.DELETED_FLAG = '0'
+    ORDER BY smr.ROLE_CODE
+    ]]>
+    </statement>
+    
+    <statement id="[delete-by-masterid]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SM_USER_ROLE   
+    WHERE USER_ID=#value#
+    ]]>
+    </statement>
+
+    <statement id="[search-by-masterid-whensuper]" parameterClass="long" resultMap="AFUserRoleResult">
+    <![CDATA[
+     SELECT smur.ROLE_ID smur_ROLE_ID,smr.ROLE_NAME smur_ROLE_NAME,smur.ROW_ID smur_ROW_ID,smur.USER_ID smur_USER_ID
+    		FROM SM_USER_ROLE smur,SM_ROLE smr
+    		WHERE smur.DELETED_FLAG = '0' and smur.ROLE_ID = smr.ROW_ID and smr.deleted_flag = '0' 
+        	AND smur.USER_ID =#value#
+    ]]>
+    </statement>
+    
+    <statement id="[search-by-masterid-whenadmin]" parameterClass="long" resultMap="AFUserRoleResult">
+    <![CDATA[
+     SELECT smur.ROLE_ID smur_ROLE_ID,smr.ROLE_NAME smur_ROLE_NAME,smur.ROW_ID smur_ROW_ID,smur.USER_ID smur_USER_ID
+    		FROM SM_USER_ROLE smur,SM_ROLE smr
+    		WHERE smur.DELETED_FLAG = '0' and smur.ROLE_ID = smr.ROW_ID and smr.deleted_flag = '0' 
+        	AND smur.USER_ID =#value#
+    ]]>
+    </statement>
+    
+    <statement id="[search-by-masterid-whendebug]" parameterClass="long" resultMap="AFUserRoleResult">
+    <![CDATA[
+        SELECT smur.ROLE_ID smur_ROLE_ID,smr.ROLE_NAME smur_ROLE_NAME,smur.ROW_ID smur_ROW_ID,smur.USER_ID smur_USER_ID
+    		FROM SM_USER_ROLE smur,SM_ROLE smr
+    		WHERE smur.DELETED_FLAG = '0' and smur.ROLE_ID = smr.ROW_ID and smr.deleted_flag = '0' 
+        	AND smur.USER_ID =#value#
+    ]]>
+    </statement>
+    
+    <statement id="[search-available-by-masterid-whensuper]" parameterClass="long" resultMap="AFUserRoleResult">
+    <![CDATA[
+     SELECT smr.ROW_ID smur_ROLE_ID,smr.ROLE_NAME smur_ROLE_NAME
+     FROM SM_ROLE smr
+    	WHERE smr.ROW_ID not in
+    	(SELECT smur.ROLE_ID 
+    	FROM SM_USER_ROLE smur
+    	WHERE smur.DELETED_FLAG = '0' AND smur.USER_ID = #value#)
+    ]]>
+    </statement>
+    
+    <statement id="[search-available-by-masterid-whenadmin]" parameterClass="long" resultMap="AFUserRoleResult">
+    <![CDATA[
+      SELECT smr.ROW_ID smur_ROLE_ID,smr.ROLE_NAME smur_ROLE_NAME
+               FROM SM_ROLE smr
+    	WHERE smr.ROW_ID not in
+    	(SELECT smur.ROLE_ID 
+    	FROM SM_USER_ROLE smur
+    	WHERE smur.DELETED_FLAG = '0' AND smur.USER_ID = #value#)
+    ]]>
+    </statement>
+    
+    <statement id="[search-available-by-masterid-whendebug]" parameterClass="long" resultMap="AFUserRoleResult">
+    <![CDATA[
+        SELECT smr.ROW_ID smur_ROLE_ID,smr.ROLE_NAME smur_ROLE_NAME
+               FROM SM_ROLE smr
+    	WHERE smr.ROW_ID not in
+    	(SELECT smur.ROLE_ID 
+    	FROM SM_USER_ROLE smur
+    	WHERE smur.DELETED_FLAG = '0' AND smur.USER_ID = #value#)
+        
+    ]]>
+    </statement>
+    
+    <statement id="[search-available-by-masterid-whenordinary]" parameterClass="long" resultMap="AFUserRoleResult">
+    <![CDATA[
+      SELECT smr.ROW_ID smur_ROLE_ID,concat(smr.ROLE_CODE,'-',smr.ROLE_NAME) smur_ROLE_NAME 
+      FROM SM_ROLE smr
+      WHERE smr.ATTR_FLAG = '0' AND smr.DELETED_FLAG = '0' AND smr.ROW_ID not in
+    	(SELECT smur.ROLE_ID 
+    	FROM SM_USER_ROLE smur
+    	WHERE smur.DELETED_FLAG = '0' AND smur.USER_ID = #value#)
+      ORDER BY smr.ROLE_CODE
+    ]]>
+    </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="AFUserRoleVO">
+    <![CDATA[
+    INSERT INTO SM_USER_ROLE(ROLE_ID,USER_ID,DELETED_FLAG,ORIGIN_FLAG,ORIGIN_APP,CREATED_BY,CREATED_DATE) 
+    VALUES(#smur_ROLE_ID#,#smur_USER_ID#,'0',#_originFlag#,#_originApp#,#_userID#,current_date)
+    ]]>
+  </statement>
+  
+  <statement id="[search-programs-by-roleids]" parameterClass="Map" resultClass="java.util.HashMap">
+	SELECT ROW_ID,PARENT_MODULE_ID,PROGRAM_NAME FROM SM_PROGRAM 
+	WHERE DELETED_FLAG='0'
+	<isNotNull prepend="and" property="roleids">
+		ROW_ID in (select program_id from sm_role_program 
+					where deleted_flag='0' and role_id in ($roleids$))
+	</isNotNull>
+  </statement>
+  
+</sqlMap>

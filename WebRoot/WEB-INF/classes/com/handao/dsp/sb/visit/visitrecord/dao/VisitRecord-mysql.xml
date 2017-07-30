@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="gb2312" ?>
+ 
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.sb.visit.visitrecord.VisitRecord">
+
+  <!-- Use type aliases to avoid typing the full classname every time-->
+  <typeAlias alias="VisitRecordVO" type="com.handao.dsp.sb.visit.visitrecord.vo.VisitRecordVO"/>
+    
+  <resultMap id="VisitRecordResult" class="VisitRecordVO">
+    <result property="ROW_ID" column="ROW_ID" nullValue="0"/>
+	<result property="CREATED_BY" column="CREATED_BY" nullValue="0"/>
+	<result property="CREATED_TIME" column="CREATED_TIME" />
+	<result property="LAST_UPD_BY" column="LAST_UPD_BY" nullValue="0"/>
+	<result property="LAST_UPD_TIME" column="LAST_UPD_TIME" />
+	<result property="MODIFICATION_NUM" column="MODIFICATION_NUM" nullValue="0"/>
+	<result property="COMPANY_ID" column="COMPANY_ID" nullValue="0"/>
+	<result property="DEPT_ID" column="DEPT_ID" nullValue="0"/>
+	<result property="VISIT_DATE" column="VISIT_DATE" />
+	<result property="VISITOR_ID" column="VISITOR_ID" nullValue="0"/>
+	<result property="VISITOR_NAME" column="VISITOR_NAME" />
+	<result property="CUSTOMER_ID" column="CUSTOMER_ID" nullValue="0"/>
+	<result property="CUSTOMER_CODE" column="CUSTOMER_CODE" />
+	<result property="CUSTOMER_DESC" column="CUSTOMER_DESC" />
+	<result property="CUSTOMER_TEL" column="CUSTOMER_TEL" />
+	<result property="CUSTOMER_ADDR" column="CUSTOMER_ADDR" />
+	<result property="VISIT_TYPE" column="VISIT_TYPE" />
+	<result property="PRD_DESC" column="PRD_DESC" />
+	<result property="PRD_PRICE" column="PRD_PRICE" nullValue="0"/>
+	<result property="EXISTING_PRD" column="EXISTING_PRD" />
+	<result property="VISIT_RESULT" column="VISIT_RESULT" />
+	<result property="RET_VISIT_STATE" column="RET_VISIT_STATE" />
+	<result property="ORIGIN_FLAG" column="ORIGIN_FLAG" />
+	<result property="REMARK" column="REMARK" />
+	<result property="IS_USING" column="IS_USING" />
+	<result property="RESERVE1" column="RESERVE1" />
+	<result property="RESERVE2" column="RESERVE2" />
+	<result property="RESERVE3" column="RESERVE3" />
+	<result property="STATUS" column="STATUS" />
+
+  </resultMap>
+
+  <statement id="[search-by-condition]" resultMap="VisitRecordResult">
+    <![CDATA[
+    SELECT ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_BY,LAST_UPD_TIME,MODIFICATION_NUM,COMPANY_ID,DEPT_ID,VISIT_DATE,VISITOR_ID,VISITOR_NAME,CUSTOMER_ID,CUSTOMER_CODE,CUSTOMER_DESC,CUSTOMER_TEL,CUSTOMER_ADDR,VISIT_TYPE,PRD_DESC,PRD_PRICE,EXISTING_PRD,VISIT_RESULT,RET_VISIT_STATE,ORIGIN_FLAG,REMARK,IS_USING,RESERVE1,RESERVE2,RESERVE3,STATUS 
+	FROM SB_VISIT_RECORD a WHERE 1=1 and a.IS_USING='Y'
+    ]]>    
+    <isNotEmpty prepend="and" property="ROW_ID">
+      <![CDATA[A.ROW_ID = #ROW_ID#]]>
+    </isNotEmpty>    
+    <isNotEmpty prepend="and" property="CUSTOMER_CODE">
+      <![CDATA[A.CUSTOMER_CODE = #CUSTOMER_CODE#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="CUSTOMER_DESC">
+      <![CDATA[A.CUSTOMER_DESC = #CUSTOMER_DESC#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="CUSTOMER_TEL">
+      <![CDATA[A.CUSTOMER_TEL = #CUSTOMER_TEL#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="VISIT_TYPE">
+      <![CDATA[A.VISIT_TYPE = #VISIT_TYPE#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="IS_USING">
+      <![CDATA[A.IS_USING = #IS_USING#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="STATUS">
+      <![CDATA[A.STATUS = #STATUS#]]>
+    </isNotEmpty>   
+    <isNotEmpty prepend="and" property="VISIT_DATE_B">
+      <![CDATA[A.VISIT_DATE >= #VISIT_DATE_B#]]>
+    </isNotEmpty>   
+    <isNotEmpty prepend="and" property="VISIT_DATE_E">
+      <![CDATA[A.VISIT_DATE <= #VISIT_DATE_E#]]>
+    </isNotEmpty>         
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="VisitRecordResult">
+    <![CDATA[ 
+    SELECT ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_BY,LAST_UPD_TIME,MODIFICATION_NUM,COMPANY_ID,DEPT_ID,VISIT_DATE,VISITOR_ID,VISITOR_NAME,CUSTOMER_ID,CUSTOMER_CODE,CUSTOMER_DESC,CUSTOMER_TEL,CUSTOMER_ADDR,VISIT_TYPE,PRD_DESC,PRD_PRICE,EXISTING_PRD,VISIT_RESULT,RET_VISIT_STATE,ORIGIN_FLAG,REMARK,IS_USING,RESERVE1,RESERVE2,RESERVE3,STATUS 
+	FROM SB_VISIT_RECORD a WHERE a.ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SB_VISIT_RECORD WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+  
+  <statement id="[update-status-by-vo]" parameterClass="VisitRecordVO">
+    <![CDATA[
+    UPDATE SB_VISIT_RECORD SET LAST_UPD_BY=#LAST_UPD_BY#,LAST_UPD_TIME=CURRENT_TIMESTAMP,MODIFICATION_NUM=MODIFICATION_NUM+1,STATUS=#STATUS# 
+	WHERE ROW_ID=#ROW_ID#
+    ]]>
+  </statement>  
+
+  <statement id="[update-by-vo]" parameterClass="VisitRecordVO">
+    <![CDATA[
+    UPDATE SB_VISIT_RECORD SET LAST_UPD_BY=#LAST_UPD_BY#,LAST_UPD_TIME=CURRENT_TIMESTAMP,MODIFICATION_NUM=MODIFICATION_NUM+1,COMPANY_ID=#COMPANY_ID#,DEPT_ID=#DEPT_ID#,VISIT_DATE=#VISIT_DATE#,VISITOR_ID=#VISITOR_ID#,VISITOR_NAME=#VISITOR_NAME#,CUSTOMER_ID=#CUSTOMER_ID#,CUSTOMER_CODE=#CUSTOMER_CODE#,CUSTOMER_DESC=#CUSTOMER_DESC#,
+    CUSTOMER_TEL=#CUSTOMER_TEL#,CUSTOMER_ADDR=#CUSTOMER_ADDR#,VISIT_TYPE=#VISIT_TYPE#,PRD_DESC=#PRD_DESC#,PRD_PRICE=#PRD_PRICE#,EXISTING_PRD=#EXISTING_PRD#,VISIT_RESULT=#VISIT_RESULT#,RET_VISIT_STATE=#RET_VISIT_STATE#,ORIGIN_FLAG=#ORIGIN_FLAG#,REMARK=#REMARK#,IS_USING=#IS_USING#,RESERVE1=#RESERVE1#,RESERVE2=#RESERVE2#,RESERVE3=#RESERVE3#,STATUS=#STATUS# 
+	WHERE ROW_ID=#ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="VisitRecordVO">
+    <![CDATA[
+    INSERT INTO SB_VISIT_RECORD(ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_TIME,COMPANY_ID,DEPT_ID,VISIT_DATE,VISITOR_ID,VISITOR_NAME,CUSTOMER_ID,CUSTOMER_CODE,CUSTOMER_DESC,CUSTOMER_TEL,CUSTOMER_ADDR,VISIT_TYPE,PRD_DESC,PRD_PRICE,EXISTING_PRD,VISIT_RESULT,RET_VISIT_STATE,ORIGIN_FLAG,REMARK,IS_USING,RESERVE1,RESERVE2,RESERVE3,STATUS) 
+	VALUES (#ROW_ID#,#CREATED_BY#,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,#COMPANY_ID#,#DEPT_ID#,#VISIT_DATE#,#VISITOR_ID#,#VISITOR_NAME#,#CUSTOMER_ID#,#CUSTOMER_CODE#,#CUSTOMER_DESC#,#CUSTOMER_TEL#,#CUSTOMER_ADDR#,#VISIT_TYPE#,#PRD_DESC#,#PRD_PRICE#,#EXISTING_PRD#,#VISIT_RESULT#,#RET_VISIT_STATE#,#ORIGIN_FLAG#,#REMARK#,#IS_USING#,#RESERVE1#,#RESERVE2#,#RESERVE3#,#STATUS#)
+    ]]>
+  </statement>
+
+</sqlMap>

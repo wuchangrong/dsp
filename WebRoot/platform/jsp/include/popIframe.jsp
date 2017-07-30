@@ -1,0 +1,2 @@
+<IFRAME name="ifLookupTB" id="ifLookupTB" Dkset_focus="false" style="HEIGHT: 1px; LEFT: 0px; POSITION: absolute; TOP: 0px; VISIBILITY: hidden; WIDTH: 1px" scrolling="yes" onblur="fhiddenifLookupTB();"></IFRAME>
+<IFRAME name="ifListBox" id="ifListBox" Dkset_focus="false" style="HEIGHT: 1px; LEFT: 0px; POSITION: absolute; TOP: 0px; VISIBILITY: hidden; WIDTH: 1px" scrolling="yes" onblur="fhiddenifListBox();"></IFRAME>

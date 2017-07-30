@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.md.codelist.CodelistDetail">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="CodelistDetailVO" type="com.handao.dsp.md.codelist.vo.CodelistDetailVO"/>
+
+
+  <resultMap id="CodelistDetailResult" class="CodelistDetailVO">
+    <result property="list_CODE_NAME" column="list_CODE_NAME" />
+    <result property="list_CODE_VALUE" column="list_CODE_VALUE" />
+    <result property="list_COMMENTS" column="list_COMMENTS" />
+    <result property="list_CREATED_BY" column="list_CREATED_BY" nullValue="0" />
+    <result property="list_CREATED_TIME" column="list_CREATED_TIME" />
+    <result property="list_LAST_UPD_BY" column="list_LAST_UPD_BY" nullValue="0" />
+    <result property="list_LAST_UPD_TIME" column="list_LAST_UPD_TIME" />
+    <result property="list_MODIFICATION_NUM" column="list_MODIFICATION_NUM" nullValue="0" />
+    <result property="list_REMARKS" column="list_REMARKS" />
+    <result property="list_ROW_ID" column="list_ROW_ID" />
+    <result property="list_SORT_CODE" column="list_SORT_CODE" />
+    <result property="list_STATUS" column="list_STATUS" />
+    <result property="list_TYPE_CODE" column="list_TYPE_CODE"/>
+    <result property="code_LOV_NAME" column="code_LOV_NAME" />
+    <result property="list_TYPE_ID" column="list_TYPE_ID" />
+    <result property="list_IS_DEFAULT" column="list_IS_DEFAULT" />
+
+  </resultMap>
+
+
+  <statement id="[search-by-masterid]" parameterClass="long" resultMap="CodelistDetailResult">
+    <![CDATA[
+    SELECT list.CODE_NAME list_CODE_NAME,list.CODE_VALUE list_CODE_VALUE,list.COMMENTS list_COMMENTS,list.CREATED_BY list_CREATED_BY,list.CREATED_TIME list_CREATED_TIME,list.LAST_UPD_BY list_LAST_UPD_BY,list.LAST_UPD_TIME list_LAST_UPD_TIME,list.MODIFICATION_NUM list_MODIFICATION_NUM,list.REMARKS list_REMARKS,list.ROW_ID list_ROW_ID,list.SORT_CODE list_SORT_CODE,list.STATUS list_STATUS,list.TYPE_CODE list_TYPE_CODE,list.TYPE_ID list_TYPE_ID,code.CODE_NAME CODE_LOV_NAME,list.IS_DEFAULT list_IS_DEFAULT 
+    FROM SM_CODE_LIST list LEFT JOIN SM_CODE_LIST code ON list.STATUS = code.CODE_VALUE AND code.TYPE_CODE='BASIC_STAT'
+    WHERE 1=1 AND list.TYPE_ID=#value#
+    ]]>
+  </statement>
+
+
+  <statement id="[search-by-condition]" parameterClass="long" resultMap="CodelistDetailResult">
+    <![CDATA[
+    SELECT list.CODE_NAME list_CODE_NAME,list.CODE_VALUE list_CODE_VALUE,list.COMMENTS list_COMMENTS,list.CREATED_BY list_CREATED_BY,list.CREATED_TIME list_CREATED_TIME,list.LAST_UPD_BY list_LAST_UPD_BY,list.LAST_UPD_TIME list_LAST_UPD_TIME,list.MODIFICATION_NUM list_MODIFICATION_NUM,list.REMARKS list_REMARKS,list.ROW_ID list_ROW_ID,list.SORT_CODE list_SORT_CODE,list.STATUS list_STATUS,list.TYPE_CODE list_TYPE_CODE,code.CODE_NAME CODE_LOV_NAME 
+    FROM SM_CODE_LIST list,AD_LOV_CODE code 
+    WHERE 1=1
+    ]]>
+  </statement>
+
+
+  <statement id="[find-by-id]" parameterClass="long" resultClass="CodelistDetailVO">
+    <![CDATA[
+    SELECT list.CODE_NAME list_CODE_NAME,list.CODE_VALUE list_CODE_VALUE,list.COMMENTS list_COMMENTS,list.CREATED_BY list_CREATED_BY,list.CREATED_TIME list_CREATED_TIME,list.LAST_UPD_BY list_LAST_UPD_BY,list.LAST_UPD_TIME list_LAST_UPD_TIME,list.MODIFICATION_NUM list_MODIFICATION_NUM,list.REMARKS list_REMARKS,list.ROW_ID list_ROW_ID,list.SORT_CODE list_SORT_CODE,list.STATUS list_STATUS,list.TYPE_CODE list_TYPE_CODE,code.LOV_NAME CODE_LOV_NAME 
+    FROM SM_CODE_LIST list,AD_LOV_CODE code 
+    WHERE 1=1 AND list.ROW_ID=#value#
+    ]]>
+  </statement>
+  
+  <statement id="[delete-by-vo]" parameterClass="CodelistDetailVO">
+    <![CDATA[
+    DELETE FROM SM_CODE_LIST 
+    WHERE ROW_ID=#list_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-masterid]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SM_CODE_LIST 
+    WHERE TYPE_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="CodelistDetailVO">
+    <![CDATA[
+    UPDATE SM_CODE_LIST
+    SET CODE_NAME=#list_CODE_NAME#,CODE_VALUE=#list_CODE_VALUE#,SORT_CODE=#list_SORT_CODE#,COMMENTS=#list_COMMENTS#,STATUS=#list_STATUS#,TYPE_CODE=#list_TYPE_CODE#,IS_DEFAULT=#list_IS_DEFAULT#,LAST_UPD_BY=#list_LAST_UPD_BY#,LAST_UPD_TIME=current_date,MODIFICATION_NUM=MODIFICATION_NUM+1
+    WHERE ROW_ID=#list_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="CodelistDetailVO">
+    <![CDATA[
+    INSERT INTO SM_CODE_LIST(CODE_NAME,CODE_VALUE,SORT_CODE,COMMENTS,STATUS,TYPE_CODE,TYPE_ID,IS_DEFAULT,CREATED_BY,LAST_UPD_BY,LAST_UPD_TIME) 
+    VALUES(#list_CODE_NAME#,#list_CODE_VALUE#,#list_SORT_CODE#,#list_COMMENTS#,#list_STATUS#,#list_TYPE_CODE#,#list_TYPE_ID#,#list_IS_DEFAULT#,#list_CREATED_BY#,#list_LAST_UPD_BY#,current_date)
+    ]]>
+  </statement>
+  
+</sqlMap>

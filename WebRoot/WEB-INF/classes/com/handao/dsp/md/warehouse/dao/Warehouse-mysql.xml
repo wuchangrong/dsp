@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.md.warehouse.Warehouse">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="WarehouseVO" type="com.handao.dsp.md.warehouse.vo.WarehouseVO"/>
+
+
+  <!-- 如果resultmap对应具体的vo对象，则需要配置vo中int、long、float、double等类型字段的nullValue属性-->
+  <resultMap id="WarehouseResult" class="WarehouseVO">
+    <result property="WH_WH_CODE" column="WH_WH_CODE" />
+    <result property="WH_WH_NAME" column="WH_WH_NAME" />
+    <result property="WH_COMPANY_ID" column="WH_COMPANY_ID" nullValue="0" />
+   
+    <result property="WH_LOCATION_ID" column="WH_LOCATION_ID" nullValue="0" />
+    <result property="WH_ADDRESS" column="WH_ADDRESS" />
+    <result property="WH_ACREAGE" column="WH_ACREAGE" nullValue="0" />
+    <result property="WH_MAX_CAPACITY" column="WH_MAX_CAPACITY" nullValue="0" />
+    <result property="WH_REMARKS" column="WH_REMARKS" />
+    <result property="WH_ROW_ID" column="WH_ROW_ID" />
+    <result property="CP_COMPANY_NAME" column="CP_COMPANY_NAME" />
+    <result property="LT_LOCATION_NAME" column="LT_LOCATION_NAME" />
+
+  </resultMap>
+ 
+
+<statement id="[do-return-msg]" resultClass="java.util.HashMap">
+ <![CDATA[
+	SELECT ROW_ID FROM MD_WAREHOUSE WHERE WH_CODE=#paraTerm#
+]]>
+</statement>
+
+
+
+<statement id="[do-return-name]" resultClass="java.util.HashMap">
+ <![CDATA[
+	SELECT ROW_ID FROM MD_WAREHOUSE WHERE WH_NAME=#paraTerm#
+]]>
+</statement>
+  <statement id="[search-by-condition]" resultMap="WarehouseResult">
+    <![CDATA[
+    SELECT WH.WH_CODE WH_WH_CODE,WH.WH_NAME WH_WH_NAME,WH.COMPANY_ID WH_COMPANY_ID,WH.LOCATION_ID WH_LOCATION_ID,WH.ADDRESS WH_ADDRESS,WH.ACREAGE WH_ACREAGE,WH.MAX_CAPACITY WH_MAX_CAPACITY,WH.REMARKS WH_REMARKS,WH.ROW_ID WH_ROW_ID,CP.COMPANY_NAME CP_COMPANY_NAME,LT.LOCATION_NAME LT_LOCATION_NAME 
+    FROM MD_WAREHOUSE WH 
+    left join MD_COMPANY CP on WH.COMPANY_ID=CP.ROW_ID 
+    left join MD_LOCATION LT on WH.LOCATION_ID=LT.ROW_ID
+    where 1=1 
+    ]]>
+    <isNotEmpty prepend="and" property="WH_WH_CODE">
+      <![CDATA[WH.WH_CODE = #WH_WH_CODE#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="WH_WH_NAME">
+      <![CDATA[WH.WH_NAME = #WH_WH_NAME#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="WH_COMPANY_ID">
+      <![CDATA[WH.COMPANY_ID = #WH_COMPANY_ID#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="WH_LOCATION_ID">
+      <![CDATA[WH.LOCATION_ID = #WH_LOCATION_ID#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="WH_ADDRESS">
+      <![CDATA[WH.ADDRESS = #WH_ADDRESS#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="WH_ACREAGE">
+      <![CDATA[WH.ACREAGE = #WH_ACREAGE#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="WH_MAX_CAPACITY">
+      <![CDATA[WH.MAX_CAPACITY = #WH_MAX_CAPACITY#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="WH_REMARKS">
+      <![CDATA[WH.REMARKS = #WH_REMARKS#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="CP_COMPANY_NAME">
+      <![CDATA[CP.COMPANY_NAME = #CP_COMPANY_NAME#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="LT_LOCATION_NAME">
+      <![CDATA[LT.LOCATION_NAME = #LT_LOCATION_NAME#]]>
+    </isNotEmpty>
+
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="WarehouseResult">
+    <![CDATA[
+    SELECT WH.WH_CODE WH_WH_CODE,WH.WH_NAME WH_WH_NAME,WH.COMPANY_ID WH_COMPANY_ID,WH.LOCATION_ID WH_LOCATION_ID,WH.ADDRESS WH_ADDRESS,WH.ACREAGE WH_ACREAGE,WH.MAX_CAPACITY WH_MAX_CAPACITY,WH.REMARKS WH_REMARKS,WH.ROW_ID WH_ROW_ID,CP.COMPANY_NAME CP_COMPANY_NAME,LT.LOCATION_NAME LT_LOCATION_NAME 
+    FROM MD_WAREHOUSE WH 
+    LEFT JOIN MD_COMPANY CP ON WH.COMPANY_ID = CP.row_id 
+    LEFT JOIN MD_LOCATION LT ON WH.LOCATION_ID = LT.row_id 
+    WHERE WH.ROW_ID=#WH_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM MD_WAREHOUSE 
+    WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="WarehouseVO">
+    <![CDATA[
+    UPDATE MD_ORG_UNIT
+    SET UNIT_CODE=#WH_WH_CODE#,UNIT_NAME=#WH_WH_NAME#,DISTRIBUTION_CENTER=#WH_LOCATION_ID#,ADDRESS=#WH_ADDRESS#,ACREAGE=#WH_ACREAGE#,MAX_CAPACITY=#WH_MAX_CAPACITY#,REMARKS=#WH_REMARKS#,LAST_UPD_BY=#LAST_UPD_BY#,LAST_UPD_TIME=current_date,MODIFICATION_NUM=MODIFICATION_NUM+1
+    WHERE ROW_ID=#WH_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="WarehouseVO">
+    <![CDATA[
+    INSERT INTO MD_ORG_UNIT(ROW_ID,UNIT_CODE,UNIT_NAME,COMPANY_ID, DISTRIBUTION_CENTER,ADDRESS,ACREAGE,MAX_CAPACITY,REMARKS,CREATED_BY,LAST_UPD_BY,LAST_UPD_TIME,IS_WAREHOUSE) 
+    VALUES(#WH_ROW_ID#,#WH_WH_CODE#,#WH_WH_NAME#,#WH_COMPANY_ID#,#WH_LOCATION_ID#,#WH_ADDRESS#,#WH_ACREAGE#,#WH_MAX_CAPACITY#,#WH_REMARKS#,#CREATED_BY#,#LAST_UPD_BY#,current_date,'Y')
+    ]]>
+  </statement>
+
+
+</sqlMap>

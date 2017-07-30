@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<sqlmap-config>
+        <sqlmap dbkey="hd" dbtype="mysql" filePath="/WEB-INF/platform/sql-map-config.xml" default="true"/>
+	</sqlmap-config>
+
+	<style-config currentStyle="default" stylePath="/platform/style" imgPath="/images" cssPath="/css">
+    	<file src="/DatePicker.css" scope="all" />
+    	<file src="/default.css" scope="all" />
+		<file src="/list.css" scope="list" />
+		<file src="/addedit.css" scope="addedit" />
+		<file src="/view.css" scope="view" />
+    </style-config>
+
+    <script-config>
+		<file src="/platform/js/c.js" scope="all" />
+		<file src="/platform/js/fw.js" scope="all" />
+    </script-config>
+</config>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="common.sm.privilege.user.User">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+
+  <!-- 如果resultmap对应具体的vo对象，则需要配置vo中int、long、float、double等类型字段的nullValue属性-->
+  <resultMap id="UserResult" class="com.handao.platform.sm.privilege.user.vo.AFUserVO">
+    <result property="row_id" column="row_id" nullValue="-1"/>
+    <result property="user_code" column="user_code" />
+    <result property="user_name" column="user_name" />
+    <result property="attr_flag" column="attr_flag" />
+    <result property="company_id" column="company_id" nullValue="0" />
+    <result property="division_id" column="division_id" nullValue="0" />
+    <result property="person_id" column="person_id" nullValue="0" />
+    <result property="password" column="password" />
+    <result property="cert_yn" column="cert_yn" />
+    <result property="cert_serialno" column="cert_serialno" />
+    <result property="email" column="email" />
+    <result property="mobile" column="mobile" />
+    <result property="contact_phone" column="contact_phone" />
+    <result property="fax" column="fax" />
+    <result property="inure_date" column="inure_date" />
+    <result property="abate_date" column="abate_date" />
+    <result property="using_flag" column="using_flag" />
+    <result property="remark" column="remark" />
+    <result property="create_date" column="create_date" />
+  </resultMap>
+  <!-- 用于详情页面 -->
+  <resultMap id="UserResult1" class="com.handao.platform.sm.privilege.user.vo.AFUserVO">
+    <result property="row_id" column="row_id" nullValue="-1"/>
+    <result property="user_code" column="user_code" />
+    <result property="user_name" column="user_name" />
+    <result property="attr_flag" column="attr_flag" />
+    <result property="company_id" column="company_id" nullValue="0" />
+    <result property="division_id" column="division_id" nullValue="0" />
+    <result property="person_id" column="person_id" nullValue="0" />
+    <result property="password" column="password" />
+    <result property="cert_yn" column="cert_yn" />
+    <result property="cert_serialno" column="cert_serialno" />
+    <result property="email" column="email" />
+    <result property="mobile" column="mobile" />
+    <result property="contact_phone" column="contact_phone" />
+    <result property="fax" column="fax" />
+    <result property="inure_date" column="inure_date" />
+    <result property="abate_date" column="abate_date" />
+    <result property="using_flag" column="using_flag" />
+    <result property="remark" column="remark" />
+    <result property="create_date" column="create_date" />
+    <result property="company_name" column="company_name" />
+    <result property="division_name" column="dept_name" />
+    <result property="person_name" column="employee_name" />
+  </resultMap>
+
+  <statement id="[search-by-condition]" resultMap="UserResult" parameterClass="map">
+    <![CDATA[
+    SELECT smu.ROW_ID row_id,smu.USER_CODE user_code,smu.USER_NAME user_name,smu.ATTR_FLAG attr_flag,smu.COMPANY_ID company_id,smu.DIVISION_ID division_id,smu.PERSON_ID person_id,smu.PASSWORD password,smu.CERT_YN cert_yn,smu.CERT_SERIALNO cert_serialno,smu.EMAIL email,smu.MOBILE mobile,smu.CONTACT_PHONE contact_phone,smu.FAX fax,smu.INURE_DATE inure_date,smu.ABATE_DATE abate_date,smu.USING_FLAG using_flag,smu.CREATE_DATE create_date,smu.REMARK remark 
+    FROM SM_USER smu 
+    WHERE smu.deleted_flag = '0' 
+    ]]>
+    <isNotEmpty prepend="and" property="company_id">
+      <![CDATA[SMU.COMPANY_ID = #company_id#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="user_code">
+      <![CDATA[SMU.USER_CODE like '%$user_code$%']]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="using_flag">
+      <![CDATA[SMU.USING_FLAG = #using_flag#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="user_name">
+      <![CDATA[SMU.USER_NAME like '%$user_name$%']]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="inure_date">
+      <![CDATA[SMU.INURE_DATE >= #inure_date#]]>
+    </isNotEmpty>
+    <![CDATA[
+    ORDER BY smu.USER_CODE
+    ]]>
+  </statement>
+  
+  <statement id="[check-user-using]" resultMap="UserResult">
+    <![CDATA[
+    SELECT smu.ROW_ID row_id,smu.USER_CODE user_code,smu.USER_NAME user_name,smu.ATTR_FLAG attr_flag,smu.COMPANY_ID company_id,smu.DIVISION_ID division_id,smu.PERSON_ID person_id,smu.PASSWORD password,smu.CERT_YN cert_yn,smu.CERT_SERIALNO cert_serialno,smu.EMAIL email,smu.MOBILE mobile,smu.CONTACT_PHONE contact_phone,smu.FAX fax,smu.INURE_DATE inure_date,smu.ABATE_DATE abate_date,smu.USING_FLAG using_flag,smu.CREATE_DATE create_date,smu.REMARK remark 
+    FROM SM_USER smu 
+    WHERE 1=1  and smu.deleted_flag = '0' 
+    ]]>
+    <isNotEmpty prepend="and" property="row_id">
+      <![CDATA[row_id in(#row_id#) and using_flag = '1' and using_flag is not null ]]>
+    </isNotEmpty>
+  </statement>
+
+  <statement id="[retrieve-user-code]" resultMap="UserResult">
+    <![CDATA[
+    SELECT smu.ROW_ID row_id,smu.USER_CODE user_code,smu.USER_NAME user_name,smu.ATTR_FLAG attr_flag,smu.COMPANY_ID company_id,smu.DIVISION_ID division_id,smu.PERSON_ID person_id,smu.PASSWORD password,smu.CERT_YN cert_yn,smu.CERT_SERIALNO cert_serialno,smu.EMAIL email,smu.MOBILE mobile,smu.CONTACT_PHONE contact_phone,smu.FAX fax,smu.INURE_DATE inure_date,smu.ABATE_DATE abate_date,smu.USING_FLAG using_flag,smu.CREATE_DATE create_date,smu.REMARK remark 
+    FROM SM_USER smu 
+    WHERE 1=1  and smu.deleted_flag = '0' 
+    ]]>
+    <isNotEmpty prepend="and" property="user_code">
+      <![CDATA[USER_CODE = #user_code#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="row_id">
+      <![CDATA[ROW_ID<>#row_id#]]>
+    </isNotEmpty>
+  </statement>
+  
+    <statement id="[retrieve-user-name]" resultMap="UserResult">
+    <![CDATA[
+    SELECT smu.ROW_ID row_id,smu.USER_CODE user_code,smu.USER_NAME user_name,smu.ATTR_FLAG attr_flag,smu.COMPANY_ID company_id,smu.DIVISION_ID division_id,smu.PERSON_ID person_id,smu.PASSWORD password,smu.CERT_YN cert_yn,smu.CERT_SERIALNO cert_serialno,smu.EMAIL email,smu.MOBILE mobile,smu.CONTACT_PHONE contact_phone,smu.FAX fax,smu.INURE_DATE inure_date,smu.ABATE_DATE abate_date,smu.USING_FLAG using_flag,smu.CREATE_DATE create_date,smu.REMARK remark 
+    FROM SM_USER smu 
+    WHERE 1=1  and smu.deleted_flag = '0' 
+    ]]>
+    <isNotEmpty prepend="and" property="user_name">
+      <![CDATA[USER_NAME = #user_name#]]>
+    </isNotEmpty>
+     <isNotEmpty prepend="and" property="row_id">
+      <![CDATA[ROW_ID<>#row_id#]]>
+    </isNotEmpty>
+  </statement>
+  
+  <statement id="[find-by-id]" parameterClass="long" resultMap="UserResult1">
+    <![CDATA[
+    SELECT smu.ROW_ID row_id,smu.USER_CODE user_code,smu.USER_NAME user_name,smu.ATTR_FLAG attr_flag,smu.COMPANY_ID company_id,smu.DIVISION_ID division_id,smu.PERSON_ID person_id,smu.PASSWORD password,smu.CERT_YN cert_yn,smu.CERT_SERIALNO cert_serialno,smu.EMAIL email,smu.MOBILE mobile,smu.CONTACT_PHONE contact_phone,smu.FAX fax,smu.INURE_DATE inure_date,smu.ABATE_DATE abate_date,smu.USING_FLAG using_flag,smu.CREATE_DATE create_date,smu.REMARK remark 
+    ,s1.company_name,s2.dept_name,s3.employee_name
+    FROM SM_USER smu
+    LEFT JOIN MD_COMPANY s1 ON smu.company_id = s1.row_id
+    LEFT JOIN MD_DEPT s2 ON smu.division_id = s2.row_id
+    LEFT JOIN MD_EMPLOYEE s3 ON smu.person_id = s3.row_id
+    WHERE 1=1 and smu.deleted_flag = '0' AND smu.ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SM_USER 
+    WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="com.handao.platform.sm.privilege.user.vo.AFUserVO">
+    <![CDATA[
+    UPDATE SM_USER
+    SET USER_CODE=#user_code#,USER_NAME=#user_name#,COMPANY_ID=#company_id#,DIVISION_ID=#division_id#,PERSON_ID=#person_id#,PASSWORD=#password#,CERT_YN=#cert_yn#,CERT_SERIALNO=#cert_serialno#,EMAIL=#email#,MOBILE=#mobile#,CONTACT_PHONE=#contact_phone#,FAX=#fax#,INURE_DATE=#inure_date#,ABATE_DATE=#abate_date#,USING_FLAG=#using_flag#,REMARK=#remark#,ATTR_FLAG=#attr_flag#,LAST_UPD_DATE=current_date,MODIFICATION_NUM=MODIFICATION_NUM+1
+    WHERE ROW_ID=#row_id#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="com.handao.platform.sm.privilege.user.vo.AFUserVO">
+    <![CDATA[
+    INSERT INTO SM_USER(ROW_ID,USER_CODE,USER_NAME,COMPANY_ID,DIVISION_ID,PERSON_ID,PASSWORD,CERT_YN,CERT_SERIALNO,EMAIL,MOBILE,CONTACT_PHONE,FAX,INURE_DATE,ABATE_DATE,USING_FLAG,REMARK,CREATE_DATE,CREATE_USER_ID,AUDIT_USER_ID,AUDIT_DATE,ATTR_FLAG,DELETED_FLAG) 
+    VALUES(#row_id#,#user_code#,#user_name#,#company_id#,#division_id#,#person_id#,#password#,#cert_yn#,#cert_serialno#,#email#,#mobile#,#contact_phone#,#fax#,#inure_date#,#abate_date#,'1',#remark#,#create_date#,#create_user_id#,#create_user_id#,current_date,#attr_flag#,'0')
+    ]]>
+  </statement>
+
+  <statement id="[change-by-vo]" parameterClass="com.handao.platform.sm.privilege.user.vo.AFUserVO">
+    <![CDATA[
+    UPDATE SM_USER
+    SET USING_FLAG=#using_flag#,LAST_UPD_DATE=current_date,MODIFICATION_NUM=MODIFICATION_NUM+1
+    WHERE ROW_ID=#row_id#
+    ]]>
+  </statement>
+
+</sqlMap>

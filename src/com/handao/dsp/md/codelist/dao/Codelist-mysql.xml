@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.md.codelist.Codelist">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="CodelistMasterVO" type="com.handao.dsp.md.codelist.vo.CodelistVO"/>
+ 
+  <resultMap id="CodelistResult" class="CodelistMasterVO">
+    <result property="type_COMMENTS" column="type_COMMENTS" />
+    <result property="type_CREATED_BY" column="type_CREATED_BY" nullValue="0" />
+    <result property="type_CREATED_TIME" column="type_CREATED_TIME" />
+    <result property="type_LAST_UPD_BY" column="type_LAST_UPD_BY" nullValue="0" />
+    <result property="type_LAST_UPD_TIME" column="type_LAST_UPD_TIME" />
+    <result property="type_MODIFICATION_NUM" column="type_MODIFICATION_NUM" nullValue="0" />
+    <result property="type_ROW_ID" column="type_ROW_ID" />
+    <result property="type_STATUS" column="type_STATUS" />
+    <result property="type_TYPE_CODE" column="type_TYPE_CODE" />
+    <result property="type_TYPE_NAME" column="type_TYPE_NAME" />
+    <result property="code_LOV_NAME" column="code_LOV_NAME" />
+
+  </resultMap>
+
+  <statement id="[search-by-condition]" resultMap="CodelistResult">
+    <![CDATA[
+    SELECT type.COMMENTS type_COMMENTS,type.CREATED_BY type_CREATED_BY,type.CREATED_TIME type_CREATED_TIME,type.LAST_UPD_BY type_LAST_UPD_BY,type.LAST_UPD_TIME type_LAST_UPD_TIME,type.MODIFICATION_NUM type_MODIFICATION_NUM,type.ROW_ID type_ROW_ID,type.STATUS type_STATUS,type.TYPE_CODE type_TYPE_CODE,type.TYPE_NAME type_TYPE_NAME,code.CODE_NAME CODE_LOV_NAME 
+    FROM SM_CODE_TYPE type LEFT JOIN SM_CODE_LIST code ON type.STATUS = code.CODE_VALUE AND code.TYPE_CODE='BASIC_STAT'
+    WHERE 1=1
+    ]]>
+    <isNotEmpty prepend="and" property="type_TYPE_CODE">
+      <![CDATA[TYPE.TYPE_CODE like #type_TYPE_CODE#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="type_TYPE_NAME">
+      <![CDATA[TYPE.TYPE_NAME like #type_TYPE_NAME#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="type_STATUS">
+      <![CDATA[TYPE.STATUS = #type_STATUS#]]>
+    </isNotEmpty>
+    <![CDATA[
+     order by type.TYPE_CODE asc
+     ]]>
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="CodelistResult">
+    <![CDATA[
+    SELECT type.COMMENTS type_COMMENTS,type.CREATED_BY type_CREATED_BY,type.CREATED_TIME type_CREATED_TIME,type.LAST_UPD_BY type_LAST_UPD_BY,type.LAST_UPD_TIME type_LAST_UPD_TIME,type.MODIFICATION_NUM type_MODIFICATION_NUM,type.ROW_ID type_ROW_ID,type.STATUS type_STATUS,type.TYPE_CODE type_TYPE_CODE,type.TYPE_NAME type_TYPE_NAME,code.CODE_NAME CODE_LOV_NAME 
+    FROM SM_CODE_TYPE type LEFT JOIN SM_CODE_LIST code ON type.STATUS = code.CODE_VALUE AND code.TYPE_CODE='BASIC_STAT'
+    WHERE 1=1 AND type.ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SM_CODE_TYPE 
+    WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="CodelistMasterVO">
+    <![CDATA[
+    UPDATE SM_CODE_TYPE
+    SET TYPE_CODE=#type_TYPE_CODE#,TYPE_NAME=#type_TYPE_NAME#,COMMENTS=#type_COMMENTS#,STATUS=#type_STATUS#,LAST_UPD_BY=#type_LAST_UPD_BY#,LAST_UPD_TIME=current_date,MODIFICATION_NUM=MODIFICATION_NUM+1
+    WHERE ROW_ID=#type_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="CodelistMasterVO">
+    <![CDATA[
+    INSERT INTO SM_CODE_TYPE(ROW_ID,TYPE_CODE,TYPE_NAME,COMMENTS,STATUS,CREATED_BY,LAST_UPD_BY,LAST_UPD_TIME) 
+    VALUES(#type_ROW_ID#,#type_TYPE_CODE#,#type_TYPE_NAME#,#type_COMMENTS#,#type_STATUS#,#type_CREATED_BY#,#type_LAST_UPD_BY#,current_date)
+    ]]>
+  </statement>
+  
+</sqlMap>

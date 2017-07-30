@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+    <!-- ========== Form Bean Definitions =================================== -->
+    <form-beans>
+        <form-bean name="sb_visit_VisitPlanForm" type="com.handao.dsp.sb.visit.visitplan.web.VisitPlanForm"/>        
+
+    </form-beans>
+    <!-- ========== End of Form Bean Definitions =================================== -->
+    <!-- ========== Action Mapping Definitions ============================== -->
+    <action-mappings>
+	      <action name="sb_visit_VisitPlanForm" parameter="method" path="/sb/visit/visitplan/VisitPlan" type="com.handao.dsp.sb.visit.visitplan.web.VisitPlanAction">
+            <forward name="list" path="/jsp/dsp/sb/visit/visitplan/VisitPlanList.jsp" />
+            <forward name="list.do" path="/sb/visit/visitplan/VisitPlan.do?method=doSearch"/>
+            <forward name="addIni.do" path="/sb/visit/visitplan/VisitPlan.do?method=doAddIni&amp;doWhat=add"/>
+            <forward name="addEdit" path="/jsp/dsp/sb/visit/visitplan/VisitPlanAddEdit.jsp?method=doAddEditIni"/>
+            <forward name="view" path="/jsp/dsp/sb/visit/visitplan/VisitPlanView.jsp?method=doView"/>
+        </action>                
+
+	  </action-mappings>
+    <!-- ========== End of Action Mapping Definitions ============================== -->
+	<message-resources key="dsp.sb.visit.visitplan"  parameter="com.handao.dsp.sb.visit.visitplan.web.MessageMapping"/>
+
+</struts-config>

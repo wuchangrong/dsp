@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="common.lookup.gridlookup">
+	<!--部门-->
+	<statement id="dept" resultClass="java.util.HashMap"
+		remapResults="true">
+		<![CDATA[
+    SELECT ROW_ID ROW_ID, DEPT_CODE CODE, DEPT_NAME NAME
+    FROM MD_DEPT
+    WHERE STATUS='1'
+     ]]>
+     	<isNotEmpty property="company_id" prepend="and">
+			COMPANY_ID = #company_id#
+		</isNotEmpty>
+		<isNotNull property="FILTER" removeFirstPrepend="true"
+			prepend="AND" open="(" close=")">
+			<isNotEmpty prepend="OR" property="FILTER.CODE">
+				DEPT_CODE LIKE #FILTER.CODE#
+			</isNotEmpty>
+			<isNotEmpty prepend="OR" property="FILTER.NAME">
+				DEPT_NAME LIKE #FILTER.NAME#
+			</isNotEmpty>
+		</isNotNull>
+		<isNotNull property="SORT" prepend="ORDER BY ">
+			$SORT.FIELD$ $SORT.DIR$
+		</isNotNull>
+	</statement>
+	<!--人员-->
+	<statement id="employee" resultClass="java.util.HashMap"
+		remapResults="true">
+		<![CDATA[
+    SELECT ROW_ID ROW_ID, EMPLOYEE_CODE CODE, EMPLOYEE_NAME NAME
+    FROM MD_EMPLOYEE
+    WHERE STATUS='1'
+     ]]>
+     	<isNotEmpty property="company_id" prepend="and">
+			COMPANY_ID = #company_id#
+		</isNotEmpty>
+     	<isNotEmpty property="division_id" prepend="and">
+			DEPT_ID = #division_id#
+		</isNotEmpty>		
+		<isNotNull property="FILTER" removeFirstPrepend="true"
+			prepend="AND" open="(" close=")">
+			<isNotEmpty prepend="OR" property="FILTER.CODE">
+				EMPLOYEE_CODE LIKE #FILTER.CODE#
+			</isNotEmpty>
+			<isNotEmpty prepend="OR" property="FILTER.NAME">
+				EMPLOYEE_NAME LIKE #FILTER.NAME#
+			</isNotEmpty>
+		</isNotNull>
+		<isNotNull property="SORT" prepend="ORDER BY ">
+			$SORT.FIELD$ $SORT.DIR$
+		</isNotNull>
+	</statement>
+</sqlMap>

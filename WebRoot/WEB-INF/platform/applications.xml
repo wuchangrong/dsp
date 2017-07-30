@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<applications>
+    <application name="platform">
+      <config>/WEB-INF/platform/platform-struts-config.xml</config>
+      <config>/platform/jsp/sm/userOnline/resource/struts-config.xml</config>
+      <config>/platform/jsp/sm/privilege/role/resource/struts-config.xml</config>
+      <config>/platform/jsp/sm/privilege/user/resource/struts-config.xml</config>
+    </application>
+
+    <application name="business">
+	  <config>/jsp/dsp/md/codelist/resource/struts-config.xml</config>
+	  <config>/jsp/dsp/md/company/resource/struts-config.xml</config>
+	  <config>/jsp/dsp/md/department/resource/struts-config.xml</config>
+	  <config>/jsp/dsp/md/employee/resource/struts-config.xml</config>
+	  <config>/jsp/dsp/md/supplier/resource/struts-config.xml</config>
+	  <config>/jsp/dsp/md/warehouse/resource/struts-config.xml</config>
+	  <config>/jsp/dsp/md/directory/directoryman/resource/Directory-struts-config.xml</config>	  	  
+	  <config>/jsp/dsp/md/directory/direaut/resource/Direaut-struts-config.xml</config>	  
+	  
+	  <!--Start  add by wucr on 2010-07-17 -->
+	  <config>/jsp/dsp/sb/visit/visitrecord/resource/VisitRecord-struts-config.xml</config>	  	  
+	  <config>/jsp/dsp/sb/daily/route/resource/RouteDaily-struts-config.xml</config>	  	  
+	  <config>/jsp/dsp/sb/visit/visitplan/resource/VisitPlan-struts-config.xml</config>	  	  
+	  <!--End  add by wucr on 2010-07-17 -->		  	  
+    </application>	
+</applications>

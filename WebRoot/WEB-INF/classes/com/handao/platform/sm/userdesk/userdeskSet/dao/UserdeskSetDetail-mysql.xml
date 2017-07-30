@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="common.userdesk.userdeskSet.userdeskSet.UserdeskSetDetail">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="UserdeskSetDetailVO" type="com.handao.platform.sm.userdesk.userdeskSet.vo.UserdeskSetDetailVO"/>
+
+
+  <resultMap id="UserdeskSetDetailResult" class="UserdeskSetDetailVO">
+    <result property="d_ROW_ID" column="d_ROW_ID" nullValue="0"/>
+    <result property="d_CREATED_BY" column="d_CREATED_BY" nullValue="0" />
+    <result property="d_MODULE_ID" column="d_MODULE_ID" nullValue="0" />
+    <result property="d_LABEL" column="d_LABEL" />
+    <result property="d_VISIABLE" column="d_VISIABLE" />
+    <result property="d_DISP_NO" column="d_DISP_NO" nullValue="0" />
+    <result property="d_STATUS" column="d_STATUS" />
+    <result property="d_LAST_UPD_BY" column="d_LAST_UPD_BY" nullValue="0" />
+    <result property="d_ROLE_ID" column="d_ROLE_ID" nullValue="0" />
+    <result property="d_GROUP_ID" column="d_GROUP_ID" nullValue="0" />
+
+  </resultMap>
+
+
+  <statement id="[search-by-masterid]" parameterClass="long" resultMap="UserdeskSetDetailResult">
+    <![CDATA[
+    SELECT d.ROW_ID d_ROW_ID,d.CREATED_BY d_CREATED_BY,d.MODULE_ID d_MODULE_ID,
+    d.LABEL d_LABEL,d.VISIABLE d_VISIABLE,d.DISP_NO d_DISP_NO,d.STATUS d_STATUS,
+    d.LAST_UPD_BY d_LAST_UPD_BY,d.ROLE_ID d_ROLE_ID,d.GROUP_ID d_GROUP_ID 
+    FROM SM_USER_DESK_PROGRAM d 
+    WHERE 1=1 AND d.GROUP_ID=#value#
+    ORDER BY d.DISP_NO
+    ]]>
+  </statement>
+
+
+  <statement id="[search-by-condition]" parameterClass="long" resultMap="UserdeskSetDetailResult">
+    <![CDATA[
+    SELECT d.ROW_ID d_ROW_ID,d.CREATED_BY d_CREATED_BY,d.MODULE_ID d_MODULE_ID,d.LABEL d_LABEL,d.VISIABLE d_VISIABLE,d.DISP_NO d_DISP_NO,d.STATUS d_STATUS,d.LAST_UPD_BY d_LAST_UPD_BY,d.ROLE_ID d_ROLE_ID,d.GROUP_ID d_GROUP_ID 
+    FROM SM_USER_DESK_PROGRAM d 
+    WHERE 1=1
+    ]]>
+  </statement>
+
+
+  <statement id="[find-by-id]" parameterClass="long" resultClass="UserdeskSetDetailVO">
+    <![CDATA[
+    SELECT d.ROW_ID d_ROW_ID,d.CREATED_BY d_CREATED_BY,d.MODULE_ID d_MODULE_ID,d.LABEL d_LABEL,d.VISIABLE d_VISIABLE,d.DISP_NO d_DISP_NO,d.STATUS d_STATUS,d.LAST_UPD_BY d_LAST_UPD_BY,d.ROLE_ID d_ROLE_ID,d.GROUP_ID d_GROUP_ID 
+    FROM SM_USER_DESK_PROGRAM d 
+    WHERE 1=1 AND d.ROW_ID=#value#
+    ]]>
+  </statement>
+  
+  <statement id="[delete-by-vo]" parameterClass="UserdeskSetDetailVO">
+    <![CDATA[
+    DELETE FROM SM_USER_DESK_PROGRAM 
+    WHERE ROW_ID=#d_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-masterid]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SM_USER_DESK_PROGRAM 
+    WHERE GROUP_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="UserdeskSetDetailVO">
+    <![CDATA[
+    UPDATE SM_USER_DESK_PROGRAM
+    SET LAST_UPD_TIME=CURRENT TIMESTAMP,CREATED_BY=#d_CREATED_BY#,MODULE_ID=#d_MODULE_ID#,LABEL=#d_LABEL#,VISIABLE=#d_VISIABLE#,DISP_NO=#d_DISP_NO#,STATUS=#d_STATUS#,LAST_UPD_BY=#d_LAST_UPD_BY#,ROLE_ID=#d_ROLE_ID#,GROUP_ID=#d_GROUP_ID#
+    WHERE ROW_ID=#d_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="UserdeskSetDetailVO">
+    <![CDATA[
+    INSERT INTO SM_USER_DESK_PROGRAM(ROW_ID,CREATED_BY,MODULE_ID,LABEL,VISIABLE,DISP_NO,STATUS,LAST_UPD_BY,ROLE_ID,GROUP_ID) 
+    VALUES(#d_ROW_ID#,#d_CREATED_BY#,#d_MODULE_ID#,#d_LABEL#,#d_VISIABLE#,#d_DISP_NO#,#d_STATUS#,#d_LAST_UPD_BY#,#d_ROLE_ID#,#d_GROUP_ID#)
+    ]]>
+  </statement>
+  
+  
+  <!-- 模块树 -->
+  <statement id="[program-tree]" parameterClass="Map" resultClass="java.util.HashMap">
+    <![CDATA[
+    WITH RPL 
+(ROW_ID, PROGRAM_CODE, PROGRAM_NAME, INNER_CODE, SUBSYSTEM_ID, DEFAULT_YN, MENU_NAME, FILE_NAME, PICTURE, 
+  TARGET, START_PROGRAM, LEAF_YN, LEVEL_NUM, PARENT_MODULE_ID, PROGRAM_DESC, USING_FLAG, VISIBLE_FLAG, TAXIS_NO, APPLICATION_ID
+) AS    
+    
+	(   SELECT ROOT.ROW_ID, ROOT.PROGRAM_CODE, ROOT.PROGRAM_NAME, ROOT.INNER_CODE,ROOT.SUBSYSTEM_ID,
+	   ROOT.DEFAULT_YN,ROOT.MENU_NAME,ROOT.FILE_NAME,ROOT.PICTURE,ROOT.TARGET,
+	   ROOT.START_PROGRAM,ROOT.LEAF_YN,ROOT.LEVEL_NUM,ROOT.PARENT_MODULE_ID,ROOT.PROGRAM_DESC,
+	   ROOT.USING_FLAG,ROOT.VISIBLE_FLAG,ROOT.TAXIS_NO,ROOT.APPLICATION_ID          
+	   FROM SM_PROGRAM ROOT       
+	   WHERE 
+
+	   ROOT.USING_FLAG = '0' AND ROOT.VISIBLE_FLAG = '0' 
+	   AND ROOT.LEVEL_NUM >= -1 AND ROOT.LEVEL_NUM <= 10 
+	   AND ROOT.LEAF_YN='Y'        
+	    AND  (         
+		     ROOT.ROW_ID IN          
+			   (  SELECT DISTINCT PROGRAM_ID FROM SM_ROLE_PROGRAM  WHERE DELETED_FLAG = '0'  AND
+			          ROLE_ID IN   
+			           ( SELECT ROLE_ID FROM SM_USER_ROLE WHERE DELETED_FLAG = '0' AND USER_ID = #USER_ID#   
+					   ) 
+				)  
+				AND ROOT.ROW_ID NOT IN (
+								SELECT DISTINCT MODULE_ID FROM SM_USER_DESK_PROGRAM SP,SM_USER_DESK_GROUP SG  WHERE 
+							SP.GROUP_ID=SG.ROW_ID AND SG.ROLE_ID=#USER_ID#
+								   )
+			
+			 )  ]]>
+			 
+			<isNotEmpty prepend="OR" property="m_MODUL_ID">
+      			<![CDATA[ROOT.ROW_ID IN ($m_MODUL_ID$)]]>
+    	    </isNotEmpty>		
+	        <![CDATA[
+	        UNION ALL    SELECT CHILD.ROW_ID, CHILD.PROGRAM_CODE, CHILD.PROGRAM_NAME, CHILD.INNER_CODE,
+			             CHILD.SUBSYSTEM_ID,CHILD.DEFAULT_YN,CHILD.MENU_NAME,CHILD.FILE_NAME,CHILD.PICTURE,
+						 CHILD.TARGET,CHILD.START_PROGRAM,CHILD.LEAF_YN,CHILD.LEVEL_NUM,
+						 CHILD.PARENT_MODULE_ID,CHILD.PROGRAM_DESC,
+						 CHILD.USING_FLAG,CHILD.VISIBLE_FLAG,CHILD.TAXIS_NO,CHILD.APPLICATION_ID          
+						 FROM RPL PARENT, SM_PROGRAM CHILD          
+						 WHERE PARENT.PARENT_MODULE_ID  = CHILD.ROW_ID          
+						 AND CHILD.USING_FLAG = '0' AND CHILD.VISIBLE_FLAG = '0' AND CHILD.LEVEL_NUM >= -1 
+						 AND CHILD.LEVEL_NUM <= 10 						
+	)          
+
+   SELECT DISTINCT ROW_ID ID, PROGRAM_CODE PCODE, PROGRAM_NAME LABEL , START_PROGRAM,
+  CASE                WHEN LEAF_YN ='Y'                THEN 'true'                ELSE 'false'                END AS LEAF , 
+   PARENT_MODULE_ID PARENTID,  TAXIS_NO        
+  FROM RPL          ORDER BY ROW_ID, PARENT_MODULE_ID , PROGRAM_NAME   
+    ]]>
+  </statement>
+  
+
+</sqlMap>

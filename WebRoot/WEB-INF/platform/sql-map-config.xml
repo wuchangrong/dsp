@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+  <properties resource="config/SqlMapConfig.properties" />
+  <settings useStatementNamespaces="true"/>
+
+  <transactionManager type="JDBC" >
+    <dataSource type="JNDI">
+      <property name="DataSource" value="java:comp/env/jdbc/dsp"/>
+    </dataSource>
+  </transactionManager>
+  <!-- List the SQL Map XML files. They can be loaded from the classpath, as they are here (com.domain.data...) -->  
+  <sqlMap resource="com/handao/platform/framework/dao/IDFactory-${dbtype}.xml"/>  
+  <sqlMap resource="com/handao/platform/framework/util/Select-${dbtype}.xml"/>
+  
+  <sqlMap resource="com/handao/platform/sm/GridLookup-${dbtype}.xml"/> 
+  <sqlMap resource="com/handao/platform/sm/login/dao/login-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/platform/sm/privilege/userPrivilege/dao/UserPrivilege-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/platform/sm/privilege/user/dao/AFUser-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/platform/sm/privilege/user/dao/AFUserRole-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/platform/sm/privilege/user/dao/AFUserAuthorization-${dbtype}.xml"/>  
+  <sqlMap resource="com/handao/platform/sm/privilege/role/dao/AFRole-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/platform/sm/privilege/role/dao/AFRoleProgram-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/platform/sm/privilege/role/dao/AFRoleUser-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/platform/sm/userdesk/userdeskSet/dao/UserdeskSet-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/platform/sm/userdesk/userdeskSet/dao/UserdeskSetDetail-${dbtype}.xml"/>
+
+  <sqlMap resource="com/handao/dsp/md/codelist/dao/Codelist-${dbtype}.xml"></sqlMap>
+  <sqlMap resource="com/handao/dsp/md/codelist/dao/CodelistDetail-${dbtype}.xml"></sqlMap>
+  <sqlMap resource="com/handao/dsp/md/company/dao/Company-${dbtype}.xml"></sqlMap>
+  <sqlMap resource="com/handao/dsp/md/department/dao/Department-${dbtype}.xml"></sqlMap>
+  <sqlMap resource="com/handao/dsp/md/employee/dao/Employee-${dbtype}.xml"></sqlMap>
+  <sqlMap resource="com/handao/dsp/md/supplier/dao/Supplier-${dbtype}.xml"></sqlMap>
+  <sqlMap resource="com/handao/dsp/md/warehouse/dao/Warehouse-${dbtype}.xml"></sqlMap>
+  <sqlMap resource="com/handao/dsp/md/directory/directoryman/dao/Directory-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/dsp/md/directory/direaut/dao/DireautDetail-${dbtype}.xml"/>
+
+  <!--Start  add by wucr on 2010-07-11 -->
+  <sqlMap resource="com/handao/dsp/sb/visit/visitrecord/dao/VisitRecord-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/dsp/sb/daily/route/dao/RouteDaily-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/dsp/sb/daily/route/dao/RouteDailyDetail-${dbtype}.xml"/>
+  <sqlMap resource="com/handao/dsp/sb/visit/visitplan/dao/VisitPlan-${dbtype}.xml"/>
+  <!--End  add by wucr on 2010-07-17 --> 
+</sqlMapConfig>

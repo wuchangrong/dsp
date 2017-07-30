@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="common.sm.login">
+  <resultMap id="UserResult" class="com.handao.platform.sm.login.vo.UserVO">
+    <result property="row_id" column="ROW_ID" nullValue="0" />
+    <result property="user_code" column="USER_CODE"/>
+    <result property="user_name" column="USER_NAME"/>
+    <result property="attr_flag" column="ATTR_FLAG"/>
+    <result property="password" column="PASSWORD"/>    
+    <result property="company_id" column="COMPANY_ID" nullValue="0" />
+    <result property="company_name" column="COMPANY_NAME"/>   
+    <result property="division_id" column="DIVISION_ID" nullValue="0" />
+    <result property="person_id" column="PERSON_ID" nullValue="0" />
+  </resultMap>
+  <resultMap id="UserPrivilegeResult" class="com.handao.platform.sm.login.vo.UserPrivilegeVO">
+    <result property="row_id" column="ROW_ID" nullValue="0" />
+    <result property="program_code" column="PROGRAM_CODE"/>
+    <result property="program_name" column="PROGRAM_NAME"/>
+    <result property="inner_code" column="INNER_CODE"/>
+    <result property="subsystem_id" column="SUBSYSTEM_ID" nullValue="0" />
+    <result property="default_yn" column="DEFAULT_YN" nullValue="0" />
+    <result property="menu_name" column="MENU_NAME" nullValue="0" />
+    <result property="file_name" column="FILE_NAME" nullValue="0" />
+    <result property="picture" column="PICTURE" nullValue="0" />
+    <result property="target" column="TARGET" nullValue="0" />
+    <result property="start_program" column="START_PROGRAM" nullValue="0" />
+    <result property="leaf_yn" column="LEAF_YN" nullValue="0" />    
+    <result property="level_num" column="LEVEL_NUM" nullValue="0" />    
+    <result property="parent_module_id" column="PARENT_MODULE_ID" nullValue="0" />    
+    <result property="desc" column="PROGRAM_DESC" nullValue="0" />   
+    <result property="using_flag" column="USING_FLAG" nullValue="0" />              
+    <result property="visible_flag" column="VISIBLE_FLAG" nullValue="0" />
+    <result property="application_id" column="APPLICATION_ID" nullValue="0" />    
+  </resultMap>
+
+  <statement id="[get-user-by-code]" parameterClass="String" resultMap="UserResult">
+    <![CDATA[
+	SELECT 
+		A.ROW_ID,A.USER_CODE,A.USER_NAME,A.ATTR_FLAG,A.COMPANY_ID,DIVISION_ID,A.PERSON_ID,A.PASSWORD,
+		B.COMPANY_NAME
+	FROM SM_USER A
+	LEFT JOIN MD_COMPANY B ON A.COMPANY_ID = B.ROW_ID
+	WHERE USER_CODE = #value# AND INURE_DATE <= CURRENT_DATE AND ABATE_DATE >= CURRENT_DATE 
+	AND USING_FLAG = '1' AND DELETED_FLAG='0'
+    ]]>
+  </statement>
+  
+  <statement id="[get-user-privilege-by-level]" parameterClass="java.util.Map" resultMap="UserPrivilegeResult">
+    <![CDATA[  
+      SELECT * FROM (
+         SELECT DISTINCT c.ROW_ID, c.PROGRAM_CODE, c.PROGRAM_NAME, c.INNER_CODE, c.SUBSYSTEM_ID, c.DEFAULT_YN, c.MENU_NAME, c.FILE_NAME, c.PICTURE, c.TARGET, c.START_PROGRAM, c.LEAF_YN, c.LEVEL_NUM, c.PARENT_MODULE_ID, c.PROGRAM_DESC, c.USING_FLAG, c.VISIBLE_FLAG, c.APPLICATION_ID 
+         FROM SM_USER_ROLE a, SM_ROLE_PROGRAM b, SM_PROGRAM c 
+         WHERE a.ROLE_ID = b.ROLE_ID and b.PROGRAM_ID = c.ROW_ID AND a.USER_ID = #userId# AND c.LEVEL_NUM = #levelNum# AND c.USING_FLAG = '0' AND c.VISIBLE_FLAG = '0' AND CONTROL_FLAG='1' AND a.DELETED_FLAG='0' AND b.DELETED_FLAG='0'
+         UNION
+         SELECT c.ROW_ID, c.PROGRAM_CODE, c.PROGRAM_NAME, c.INNER_CODE, c.SUBSYSTEM_ID, c.DEFAULT_YN, c.MENU_NAME, c.FILE_NAME, c.PICTURE, c.TARGET, c.START_PROGRAM, c.LEAF_YN, c.LEVEL_NUM, c.PARENT_MODULE_ID, c.PROGRAM_DESC, c.USING_FLAG, c.VISIBLE_FLAG, c.APPLICATION_ID 
+         FROM SM_PROGRAM c 
+         WHERE c.CONTROL_FLAG='0' AND c.LEVEL_NUM=#levelNum# AND c.DELETED_FLAG ='0'
+      ) TABLE1 
+      ORDER BY $orderByField$
+    ]]>
+  </statement>        
+</sqlMap>

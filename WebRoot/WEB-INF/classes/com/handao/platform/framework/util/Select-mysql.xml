@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="framework.util.select">
+
+  <typeAlias alias="AFSelectListVO" type="com.handao.platform.framework.vo.AFSelectListVO"/>
+  <typeAlias alias="AFTreeNodeMap" type="com.handao.platform.framework.util.tree.AFTreeNodeMap"/>
+
+  <statement id="select-by-sql" parameterClass="String" resultClass="AFSelectListVO" >
+    <![CDATA[
+    $value$
+    ]]>
+  </statement>
+  <statement id="select-all" resultClass="AFSelectListVO" >
+    <![CDATA[
+	SELECT M.TYPE_CODE LIST_CODE,S.CODE_VALUE CODE ,S.CODE_NAME NAME
+	FROM SM_CODE_TYPE M,SM_CODE_LIST S
+	WHERE M.ROW_ID = S.TYPE_ID AND M.STATUS='1' 
+	ORDER BY LIST_CODE,CODE
+    ]]>
+  </statement>
+
+  <statement id="isUnique" parameterClass="java.util.Map" resultClass="java.util.HashMap" >
+    <![CDATA[
+	SELECT 1 X
+	FROM $tableName$
+	WHERE $columnName$ = #value# and row_id != #rowid#
+    ]]>
+  </statement>
+</sqlMap>

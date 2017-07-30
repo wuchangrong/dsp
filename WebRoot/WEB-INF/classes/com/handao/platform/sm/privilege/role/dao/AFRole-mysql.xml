@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="common.sm.privilege.role.Role">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="AFRoleVO" type="com.handao.platform.sm.privilege.role.vo.AFRoleVO"/>
+ 
+  <resultMap id="AFRoleResult" class="AFRoleVO">
+    <result property="smr_ROW_ID" column="smr_ROW_ID" nullValue="-1" />
+    <result property="smr_COMPANY_ID" column="smr_COMPANY_ID" nullValue="-1" />
+    <result property="smr_ROLE_CODE" column="smr_ROLE_CODE" />
+    <result property="smr_ROLE_NAME" column="smr_ROLE_NAME" />
+    <result property="smr_ATTR_FLAG" column="smr_ATTR_FLAG" />
+    <result property="smr_REMARK" column="smr_REMARK" />
+  </resultMap>
+
+  <statement id="[search-by-condition]" resultMap="AFRoleResult">
+    <![CDATA[
+    SELECT smr.ROW_ID smr_ROW_ID,smr.COMPANY_ID smr_COMPANY_ID,smr.ROLE_CODE smr_ROLE_CODE,smr.ROLE_NAME smr_ROLE_NAME,
+    	smr.ATTR_FLAG smr_ATTR_FLAG,smr.REMARK smr_REMARK 
+    	FROM SM_ROLE smr 
+    	WHERE smr.DELETED_FLAG = '0' and smr.ATTR_FLAG ='0' 
+    ]]>
+    <isNotEmpty prepend="and" property="smr_COMPANY_ID">
+      <![CDATA[SMR.COMPANY_ID = #smr_COMPANY_ID#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="smr_ROLE_CODE">
+      <![CDATA[smr.ROLE_CODE like '%$smr_ROLE_CODE$%']]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="smr_ROLE_NAME">
+      <![CDATA[smr.ROLE_NAME like '%$smr_ROLE_NAME$%']]>
+    </isNotEmpty>
+    <![CDATA[
+      ORDER BY smr.ROLE_CODE
+    ]]>
+  </statement>
+
+    <statement id="[search-by-condition-whensuper]" resultMap="AFRoleResult">
+    <![CDATA[
+    SELECT smr.ROW_ID smr_ROW_ID,smr.COMPANY_ID smr_COMPANY_ID,smr.ROLE_CODE smr_ROLE_CODE,smr.ROLE_NAME smr_ROLE_NAME,
+    	smr.ATTR_FLAG smr_ATTR_FLAG,smr.REMARK smr_REMARK 
+    	FROM SM_ROLE smr 
+    	WHERE smr.DELETED_FLAG ='0' and smr.ATTR_FLAG ='0'  
+    ]]>   
+    </statement>
+    
+    <statement id="[search-by-condition-whenadmin]" resultMap="AFRoleResult">
+    <![CDATA[
+    SELECT smr.ROW_ID smr_ROW_ID,smr.COMPANY_ID smr_COMPANY_ID,smr.ROLE_CODE smr_ROLE_CODE,smr.ROLE_NAME smr_ROLE_NAME,
+    	smr.ATTR_FLAG smr_ATTR_FLAG,smr.REMARK smr_REMARK 
+    	FROM SM_ROLE smr 
+    	WHERE smr.DELETED_FLAG = '0' and smr.ATTR_FLAG ='0' 
+    ]]>
+    <isNotEmpty prepend="and" property="smr_COMPANY_ID">
+      <![CDATA[SMR.COMPANY_ID = #smr_COMPANY_ID#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="smr_ROLE_CODE">
+      <![CDATA[smr.ROLE_CODE like '%$smr_ROLE_CODE$%']]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="smr_ROLE_NAME">
+      <![CDATA[smr.ROLE_NAME like '%$smr_ROLE_NAME$%']]>
+    </isNotEmpty>
+    <![CDATA[
+      ORDER BY smr.ROLE_CODE
+    ]]>
+  </statement>
+    
+    <statement id="[search-by-condition-whendebug]" resultMap="AFRoleResult">
+    <![CDATA[
+    SELECT smr.ROW_ID smr_ROW_ID,smr.COMPANY_ID smr_COMPANY_ID,smr.ROLE_CODE smr_ROLE_CODE,smr.ROLE_NAME smr_ROLE_NAME,
+    	smr.ATTR_FLAG smr_ATTR_FLAG,smr.REMARK smr_REMARK 
+    	FROM SM_ROLE smr 
+    	WHERE smr.DELETED_FLAG = '0'  
+    ]]>
+    <isNotEmpty prepend="and" property="smr_COMPANY_ID">
+      <![CDATA[SMR.COMPANY_ID = #smr_COMPANY_ID#]]>
+    </isNotEmpty>
+          <isNotEmpty prepend="and" property="smr_ROLE_CODE">
+      <![CDATA[smr.ROLE_CODE = #smr_ROLE_CODE#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="smr_ROLE_NAME">
+      <![CDATA[smr.ROLE_NAME = #smr_ROLE_NAME#]]>
+    </isNotEmpty>
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="AFRoleResult">
+    <![CDATA[
+    SELECT smr.ROW_ID smr_ROW_ID,smr.COMPANY_ID smr_COMPANY_ID,smr.ROLE_CODE smr_ROLE_CODE,smr.ROLE_NAME smr_ROLE_NAME,
+    	smr.ATTR_FLAG smr_ATTR_FLAG,smr.REMARK smr_REMARK 
+    	FROM SM_ROLE smr 
+    	WHERE smr.DELETED_FLAG = '0' AND smr.ROW_ID = #value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SM_ROLE  
+    WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="AFRoleVO">
+    <![CDATA[
+    UPDATE SM_ROLE 
+    SET COMPANY_ID=#smr_COMPANY_ID#,ROLE_CODE=#smr_ROLE_CODE#,ROLE_NAME=#smr_ROLE_NAME#,ATTR_FLAG=#smr_ATTR_FLAG#,REMARK=#smr_REMARK#,LAST_UPD_BY=#_userID#,LAST_UPD_DATE=CURRENT_TIMESTAMP,MODIFICATION_NUM=MODIFICATION_NUM+1 
+    WHERE ROW_ID=#smr_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="AFRoleVO">
+    <![CDATA[
+    INSERT INTO SM_ROLE(ROW_ID,COMPANY_ID,ROLE_CODE,ROLE_NAME,ATTR_FLAG,REMARK,DELETED_FLAG,ORIGIN_FLAG,ORIGIN_APP,CREATED_BY,CREATED_DATE) 
+    VALUES(#smr_ROW_ID#,#smr_COMPANY_ID#,#smr_ROLE_CODE#,#smr_ROLE_NAME#,#smr_ATTR_FLAG#,#smr_REMARK#,'0',#_originFlag#,#_originApp#,#_userID#,CURRENT_TIMESTAMP)
+    ]]>
+  </statement>
+  <!-- 2009-1-15 add by ludongjun start-->
+  <statement id="[retrieve-role-code]" resultMap="AFRoleResult">
+    <![CDATA[
+   SELECT smr.ROW_ID smr_ROW_ID,smr.COMPANY_ID smr_COMPANY_ID,smr.ROLE_CODE smr_ROLE_CODE,smr.ROLE_NAME smr_ROLE_NAME,
+    	smr.ATTR_FLAG smr_ATTR_FLAG,smr.REMARK smr_REMARK 
+    	FROM SM_ROLE smr 
+    	WHERE smr.DELETED_FLAG = '0' and smr.ATTR_FLAG ='0' 
+    ]]>
+    <isNotEmpty prepend="and" property="role_code">
+      <![CDATA[ROLE_CODE = #role_code#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="row_id">
+      <![CDATA[ROW_ID<>#row_id#]]>
+    </isNotEmpty>
+  </statement>
+  
+    <statement id="[retrieve-role-name]" resultMap="AFRoleResult">
+    <![CDATA[
+    SELECT smr.ROW_ID smr_ROW_ID,smr.COMPANY_ID smr_COMPANY_ID,smr.ROLE_CODE smr_ROLE_CODE,smr.ROLE_NAME smr_ROLE_NAME,
+    	smr.ATTR_FLAG smr_ATTR_FLAG,smr.REMARK smr_REMARK 
+    	FROM SM_ROLE smr 
+    	WHERE smr.DELETED_FLAG = '0' and smr.ATTR_FLAG ='0' 
+    ]]>
+    <isNotEmpty prepend="and" property="role_name">
+      <![CDATA[ROLE_NAME = #role_name#]]>
+    </isNotEmpty>
+     <isNotEmpty prepend="and" property="row_id">
+      <![CDATA[ROW_ID<>#row_id#]]>
+    </isNotEmpty>
+  </statement>
+</sqlMap>

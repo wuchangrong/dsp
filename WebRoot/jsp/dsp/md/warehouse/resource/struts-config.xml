@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+    <!-- ========== Form Bean Definitions =================================== -->
+    <form-beans>
+        <form-bean name="WMS_BASE_WAREHOUSE_WarehouseForm" type="com.handao.dsp.md.warehouse.web.WarehouseForm"/>        
+
+    </form-beans>
+    <!-- ========== End of Form Bean Definitions =================================== -->
+
+    <!-- ========== Action Mapping Definitions ============================== -->
+    <action-mappings>
+
+	  <action name="WMS_BASE_WAREHOUSE_WarehouseForm" parameter="method" path="/dsp/md/warehouse/Warehouse" type="com.handao.dsp.md.warehouse.web.WarehouseAction">
+            <forward name="list" path="/jsp/dsp/md/warehouse/WarehouseList.jsp" />
+            <forward name="list.do" path="/dsp/md/warehouse/Warehouse.do?method=doSearch"/>
+            <forward name="addIni.do" path="/dsp/md/warehouse/Warehouse.do?method=doAddIni&amp;doWhat=add"/>
+            <forward name="addEdit" path="/jsp/dsp/md/warehouse/WarehouseAddEdit.jsp?method=doAddEditIni"/>
+            <forward name="view" path="/jsp/dsp/md/warehouse/WarehouseView.jsp?method=doView"/>
+        </action>
+ 
+
+	  </action-mappings>
+    <!-- ========== End of Action Mapping Definitions ============================== -->
+	<message-resources key="dsp.md.warehouse"  parameter="com.handao.dsp.md.warehouse.web.MessageMapping"/>
+
+</struts-config>

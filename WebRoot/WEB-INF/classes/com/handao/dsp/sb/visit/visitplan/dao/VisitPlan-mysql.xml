@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.sb.visit.visitplan.VisitPlan">
+
+  <!-- Use type aliases to avoid typing the full classname every time-->
+  <typeAlias alias="VisitPlanVO" type="com.handao.dsp.sb.visit.visitplan.vo.VisitPlanVO"/>
+    
+  <resultMap id="VisitPlanResult" class="VisitPlanVO">
+    <result property="ROW_ID" column="ROW_ID" nullValue="0"/>
+	<result property="CREATED_BY" column="CREATED_BY" nullValue="0"/>
+	<result property="CREATED_TIME" column="CREATED_TIME" />
+	<result property="LAST_UPD_BY" column="LAST_UPD_BY" nullValue="0"/>
+	<result property="LAST_UPD_TIME" column="LAST_UPD_TIME" />
+	<result property="MODIFICATION_NUM" column="MODIFICATION_NUM" nullValue="0"/>
+	<result property="COMPANY_ID" column="COMPANY_ID" nullValue="0"/>
+	<result property="DEPT_ID" column="DEPT_ID" nullValue="0"/>
+	<result property="VISIT_DATE" column="VISIT_DATE" />
+	<result property="VISITOR_ID" column="VISITOR_ID" nullValue="0"/>
+	<result property="VISITOR_NAME" column="VISITOR_NAME" />
+	<result property="CUSTOMER_ID" column="CUSTOMER_ID" nullValue="0"/>
+	<result property="CUSTOMER_CODE" column="CUSTOMER_CODE" nullValue="0"/>
+	<result property="CUSTOMER_DESC" column="CUSTOMER_DESC" nullValue="0"/>
+	<result property="CUSTOMER_TEL" column="CUSTOMER_TEL" nullValue="0"/>
+	<result property="SUBJECT" column="SUBJECT" />
+	<result property="VISIT_TYPE" column="VISIT_TYPE" />
+	<result property="WORK_CONTENT" column="WORK_CONTENT" />
+	<result property="FEEDBACK" column="FEEDBACK" />
+	<result property="RESERVE1" column="RESERVE1" />
+	<result property="RESERVE2" column="RESERVE2" />
+	<result property="RESERVE3" column="RESERVE3" />
+	<result property="IS_USING" column="IS_USING" />
+	<result property="STATUS" column="STATUS" />
+
+  </resultMap>
+
+  <statement id="[search-by-condition]" resultMap="VisitPlanResult">
+    <![CDATA[
+    SELECT A.ROW_ID,A.CREATED_BY,A.CREATED_TIME,A.LAST_UPD_BY,A.LAST_UPD_TIME,A.MODIFICATION_NUM,A.COMPANY_ID,A.DEPT_ID,VISIT_DATE,VISITOR_ID,VISITOR_NAME,A.CUSTOMER_ID,B.CUSTOMER_CODE,B.CUSTOMER_DESC,B.TEL AS CUSTOMER_TEL,SUBJECT,VISIT_TYPE,WORK_CONTENT,FEEDBACK,A.RESERVE1,A.RESERVE2,A.RESERVE3,A.IS_USING,A.STATUS 
+	FROM SB_VISIT_PLAN a LEFT JOIN MD_CUSTOMER b ON (A.CUSTOMER_ID=B.ROW_ID)
+	WHERE 1=1  and a.IS_USING='Y'
+    ]]>    
+    <isNotEmpty prepend="and" property="ROW_ID">
+      <![CDATA[A.ROW_ID = #ROW_ID#]]>
+    </isNotEmpty>    
+     
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="VisitPlanResult">
+    <![CDATA[ 
+    SELECT A.ROW_ID,A.CREATED_BY,A.CREATED_TIME,A.LAST_UPD_BY,A.LAST_UPD_TIME,A.MODIFICATION_NUM,A.COMPANY_ID,A.DEPT_ID,VISIT_DATE,VISITOR_ID,VISITOR_NAME,A.CUSTOMER_ID,B.CUSTOMER_CODE,B.CUSTOMER_DESC,B.TEL AS CUSTOMER_TEL,SUBJECT,VISIT_TYPE,WORK_CONTENT,FEEDBACK,A.RESERVE1,A.RESERVE2,A.RESERVE3,A.IS_USING,A.STATUS 
+	FROM SB_VISIT_PLAN a LEFT JOIN MD_CUSTOMER b ON (A.CUSTOMER_ID=B.ROW_ID)
+	WHERE a.ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SB_VISIT_PLAN WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="VisitPlanVO">
+    <![CDATA[
+    UPDATE SB_VISIT_PLAN SET LAST_UPD_BY=#LAST_UPD_BY#,LAST_UPD_TIME=CURRENT_TIMESTAMP,MODIFICATION_NUM=MODIFICATION_NUM+1,COMPANY_ID=#COMPANY_ID#,DEPT_ID=#DEPT_ID#,VISIT_DATE=#VISIT_DATE#,VISITOR_ID=#VISITOR_ID#,VISITOR_NAME=#VISITOR_NAME#,
+    CUSTOMER_ID=#CUSTOMER_ID#,SUBJECT=#SUBJECT#,VISIT_TYPE=#VISIT_TYPE#,WORK_CONTENT=#WORK_CONTENT#,FEEDBACK=#FEEDBACK#,RESERVE1=#RESERVE1#,RESERVE2=#RESERVE2#,RESERVE3=#RESERVE3#,IS_USING=#IS_USING#,STATUS=#STATUS# 
+	WHERE ROW_ID=#ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="VisitPlanVO">
+    <![CDATA[
+    INSERT INTO SB_VISIT_PLAN(ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_TIME,COMPANY_ID,DEPT_ID,VISIT_DATE,VISITOR_ID,VISITOR_NAME,CUSTOMER_ID,SUBJECT,VISIT_TYPE,WORK_CONTENT,FEEDBACK,RESERVE1,RESERVE2,RESERVE3,IS_USING,STATUS) 
+	VALUES (#ROW_ID#,#CREATED_BY#,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,#COMPANY_ID#,#DEPT_ID#,#VISIT_DATE#,#VISITOR_ID#,#VISITOR_NAME#,#CUSTOMER_ID#,#SUBJECT#,#VISIT_TYPE#,#WORK_CONTENT#,#FEEDBACK#,#RESERVE1#,#RESERVE2#,#RESERVE3#,#IS_USING#,#STATUS#)
+    ]]>
+  </statement>
+
+</sqlMap>

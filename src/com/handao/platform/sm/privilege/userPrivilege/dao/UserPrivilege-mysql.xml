@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="common.sm.privilege.userPrivilege.UserPrivilege">
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="UserPrivilegeVO" type="com.handao.platform.sm.privilege.userPrivilege.vo.AFUserPrivilegeVO"/>
+
+
+  <!-- 如果resultmap对应具体的vo对象，则需要配置vo中int、long、float、double等类型字段的nullValue属性-->
+  <resultMap id="UserPrivilegeResult" class="UserPrivilegeVO">
+    <result property="row_id" column="row_id" nullValue="-1"/>
+    <result property="program_code" column="program_code" />
+    <result property="program_name" column="program_name" />
+    <result property="inner_code" column="inner_code" />
+    <result property="subsystem_id" column="subsystem_id"  />
+    <result property="menu_name" column="menu_name" />
+    <result property="default_yn" column="default_yn" />
+    <result property="file_name" column="file_name" />
+    <result property="picture" column="picture" />
+    <result property="target" column="target" />
+    <result property="start_program" column="start_program" />
+    <result property="leaf_yn" column="leaf_yn" />
+    <result property="level_num" column="level_num" />
+    <result property="parent_module_id" column="parent_module_id" />
+  </resultMap>
+  
+  <statement id="[search-by-map]" resultMap="UserPrivilegeResult">
+    <![CDATA[
+    SELECT DISTINCT c.ROW_ID, c.PROGRAM_CODE, c.PROGRAM_NAME, c.INNER_CODE, c.SUBSYSTEM_ID, c.DEFAULT_YN, c.MENU_NAME, c.FILE_NAME, c.PICTURE, c.TARGET, c.START_PROGRAM, c.LEAF_YN, c.LEVEL_NUM, c.PARENT_MODULE_ID, c.PROGRAM_DESC, c.USING_FLAG, c.VISIBLE_FLAG, c.TAXIS_NO, c.APPLICATION_ID FROM SM_USER_ROLE a, SM_ROLE_PROGRAM b, SM_PROGRAM c WHERE a.ROLE_ID = b.ROLE_ID and b.PROGRAM_ID = c.ROW_ID AND a.USER_ID = #userId# AND c.LEVEL_NUM = #levelNum# AND c.USING_FLAG = '0' AND c.VISIBLE_FLAG = '0' AND CONTROL_FLAG='1' AND a.DELETED_FLAG='0' AND b.DELETED_FLAG='0' UNION SELECT c.ROW_ID, c.PROGRAM_CODE, c.PROGRAM_NAME, c.INNER_CODE, c.SUBSYSTEM_ID, c.DEFAULT_YN, c.MENU_NAME, c.FILE_NAME, c.PICTURE, c.TARGET, c.START_PROGRAM, c.LEAF_YN, c.LEVEL_NUM, c.PARENT_MODULE_ID, c.PROGRAM_DESC, c.USING_FLAG, c.VISIBLE_FLAG, c.TAXIS_NO, c.APPLICATION_ID FROM SM_PROGRAM c WHERE c.CONTROL_FLAG='0' AND c.LEVEL_NUM=#levelNum# AND c.DELETED_FLAG ='0' 
+    ]]>    
+  </statement>
+
+  <statement id="[search-by-map-when-order]" resultMap="UserPrivilegeResult">
+    <![CDATA[
+    SELECT TABLE1.ROW_ID, TABLE1.PROGRAM_CODE, TABLE1.PROGRAM_NAME, TABLE1.INNER_CODE, TABLE1.SUBSYSTEM_ID, TABLE1.DEFAULT_YN, TABLE1.MENU_NAME, TABLE1.FILE_NAME, TABLE1.PICTURE, TABLE1.TARGET, TABLE1.START_PROGRAM, TABLE1.LEAF_YN, TABLE1.LEVEL_NUM, TABLE1.PARENT_MODULE_ID, TABLE1.PROGRAM_DESC, TABLE1.USING_FLAG, TABLE1.VISIBLE_FLAG, TABLE1.TAXIS_NO, TABLE1.APPLICATION_ID  
+    FROM ( SELECT DISTINCT c.ROW_ID, c.PROGRAM_CODE, c.PROGRAM_NAME, c.INNER_CODE, c.SUBSYSTEM_ID, c.DEFAULT_YN, c.MENU_NAME, c.FILE_NAME, c.PICTURE, c.TARGET, c.START_PROGRAM, c.LEAF_YN, c.LEVEL_NUM, c.PARENT_MODULE_ID, c.PROGRAM_DESC, c.USING_FLAG, c.VISIBLE_FLAG, c.TAXIS_NO, c.APPLICATION_ID FROM SM_USER_ROLE a, SM_ROLE_PROGRAM b, SM_PROGRAM c WHERE a.ROLE_ID = b.ROLE_ID and b.PROGRAM_ID = c.ROW_ID AND a.USER_ID = #userId# AND c.LEVEL_NUM = #levelNum# AND c.USING_FLAG = '0' AND c.VISIBLE_FLAG = '0' AND CONTROL_FLAG='1' AND a.DELETED_FLAG='0' AND b.DELETED_FLAG='0' 
+                   UNION 
+                   SELECT c.ROW_ID, c.PROGRAM_CODE, c.PROGRAM_NAME, c.INNER_CODE, c.SUBSYSTEM_ID, c.DEFAULT_YN, c.MENU_NAME, c.FILE_NAME, c.PICTURE, c.TARGET, c.START_PROGRAM, c.LEAF_YN, c.LEVEL_NUM, c.PARENT_MODULE_ID, c.PROGRAM_DESC, c.USING_FLAG, c.VISIBLE_FLAG, c.TAXIS_NO, c.APPLICATION_ID FROM SM_PROGRAM c WHERE c.CONTROL_FLAG='0' AND c.LEVEL_NUM=#levelNum# AND c.DELETED_FLAG ='0')  TABLE1 ORDER BY #orderByField#
+    ]]>
+  </statement>
+  
+   <!--根据用户角色权限查看相应的模块 -->
+   <statement id="SM_PROGRAM_TREE" resultClass="AFTreeNodeMap">
+    <![CDATA[
+	SELECT ROOT.ROW_ID AS ID, ROOT.PROGRAM_CODE AS PCODE, ROOT.PROGRAM_NAME AS PNAME, ROOT.START_PROGRAM,CASE ROOT.LEAF_YN WHEN 'Y' THEN 'true' WHEN 'N' THEN 'false' END AS LEAF,ROOT.PARENT_MODULE_ID AS PID,ROOT.TAXIS_NO
+	FROM SM_PROGRAM ROOT
+	WHERE ROOT.SUBSYSTEM_ID =#rowId# AND ROOT.SUBSYSTEM_ID !=ROOT.ROW_ID AND ROOT.USING_FLAG = '0' AND ROOT.VISIBLE_FLAG = '0'
+	      AND ROOT.CONTROL_FLAG='0'
+	UNION
+	SELECT ROOT.ROW_ID AS ID, ROOT.PROGRAM_CODE AS PCODE, ROOT.PROGRAM_NAME AS PNAME, ROOT.START_PROGRAM,CASE ROOT.LEAF_YN WHEN 'Y' THEN 'true' WHEN 'N' THEN 'false' END AS LEAF,ROOT.PARENT_MODULE_ID AS PID,ROOT.TAXIS_NO
+	FROM SM_PROGRAM ROOT
+	JOIN SM_ROLE_PROGRAM A 
+		 ON ROOT.ROW_ID = A.PROGRAM_ID AND A.DELETED_FLAG = '0'
+	JOIN SM_USER_ROLE B
+		 ON A.ROLE_ID = B.ROLE_ID AND B.DELETED_FLAG = '0' AND B.USER_ID = #USER_ID#
+	WHERE ROOT.SUBSYSTEM_ID =#rowId# AND ROOT.SUBSYSTEM_ID !=ROOT.ROW_ID AND ROOT.USING_FLAG = '0' AND ROOT.VISIBLE_FLAG = '0'
+	      AND ROOT.CONTROL_FLAG='1'
+     ]]>
+  </statement>
+</sqlMap>

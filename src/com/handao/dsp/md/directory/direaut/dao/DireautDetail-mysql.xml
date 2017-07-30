@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.md.directory.direaut.DireautDetail">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="DireautDetailVO" type="com.handao.dsp.md.directory.direaut.vo.DireautDetailVO"/>
+
+  <resultMap id="DireautDetailResult" class="DireautDetailVO">
+    <result property="ROW_ID" column="ROW_ID" nullValue="0"/>
+	<result property="CREATED_BY" column="CREATED_BY" nullValue="0"/>
+	<result property="CREATED_TIME" column="CREATED_TIME" />
+	<result property="LAST_UPD_BY" column="LAST_UPD_BY" nullValue="0"/>
+	<result property="LAST_UPD_TIME" column="LAST_UPD_TIME" />
+	<result property="MODIFICATION_NUM" column="MODIFICATION_NUM" nullValue="0"/>
+	<result property="DIRECTORY_ID" column="DIRECTORY_ID" nullValue="0"/>
+	<result property="ROLE_ID" column="ROLE_ID" nullValue="0"/>
+	<result property="RIGHADD" column="RIGHADD" />
+	<result property="RIGHDEL" column="RIGHDEL" />
+	<result property="RIGHEDI" column="RIGHEDI" />
+	<result property="RIGHVIE" column="RIGHVIE" />
+	<result property="RIGHAUD" column="RIGHAUD" />
+	<result property="ROLE_NAME" column="ROLE_NAME" />
+
+  </resultMap>
+
+  <statement id="[search-by-condition]" parameterClass="long" resultMap="DireautDetailResult">
+    <![CDATA[
+    SELECT ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_BY,LAST_UPD_TIME,MODIFICATION_NUM,DIRECTORY_ID,ROLE_ID,RIGHADD,RIGHDEL,RIGHEDI,RIGHVIE,RIGHAUD 
+	FROM MD_DIRECTORY_AUTHORIZATION a WHERE 1=1 
+    ]]>
+  </statement>
+  
+  <statement id="[search-by-masterid]" parameterClass="long" resultMap="DireautDetailResult">
+	SELECT a.ROW_ID,a.CREATED_BY,a.CREATED_TIME,a.LAST_UPD_BY,a.LAST_UPD_TIME,a.MODIFICATION_NUM,a.DIRECTORY_ID,a.ROLE_ID,a.RIGHADD,a.RIGHDEL,a.RIGHEDI,a.RIGHVIE,a.RIGHAUD ,c.ROLE_NAME ROLE_NAME
+	FROM MD_DIRECTORY_AUTHORIZATION a
+	JOIN SM_ROLE c ON c.ROW_ID=a.ROLE_ID
+	WHERE DIRECTORY_ID = #value#
+	UNION
+	SELECT 0,0,b.CREATED_DATE,0,b.LAST_UPD_DATE,0,$value$,b.ROW_ID,'N','N','N','N','N',ROLE_NAME
+	FROM SM_ROLE b
+	WHERE NOT EXISTS (SELECT 1 FROM md_directory_authorization c 
+	                WHERE c.ROLE_ID=b.ROW_ID AND 
+	                c.DIRECTORY_ID= #value# )
+	ORDER BY ROLE_NAME
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultClass="DireautDetailVO">
+    <![CDATA[
+    SELECT ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_BY,LAST_UPD_TIME,MODIFICATION_NUM,DIRECTORY_ID,ROLE_ID,RIGHADD,RIGHDEL,RIGHEDI,RIGHVIE,RIGHAUD 
+	FROM MD_DIRECTORY_AUTHORIZATION a WHERE 1=1  AND d.ROW_ID=#value#
+    ]]>
+  </statement>
+  
+  <statement id="[delete-by-vo]" parameterClass="DireautDetailVO">
+    <![CDATA[
+    DELETE FROM MD_DIRECTORY_AUTHORIZATION WHERE ROW_ID=#ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-masterid]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM MD_DIRECTORY_AUTHORIZATION WHERE DIRECTORY_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-map]" parameterClass="Map">
+    <![CDATA[
+    DELETE FROM MD_DIRECTORY_AUTHORIZATION 
+    WHERE DIRECTORY_ID IN (SELECT ROW_ID FROM MD_DIRECTORY a
+    					WHERE a.PATH LIKE '$DIRPATH$')
+    ]]>
+    <isNotNull prepend="and" property="ROLE_ID">
+    	ROLE_ID=#ROLE_ID#
+    </isNotNull>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="DireautDetailVO">
+    <![CDATA[
+    UPDATE MD_DIRECTORY_AUTHORIZATION SET LAST_UPD_BY=#LAST_UPD_BY#,LAST_UPD_TIME=CURRENT_TIMESTAMP,MODIFICATION_NUM=MODIFICATION_NUM+1,DIRECTORY_ID=#DIRECTORY_ID#,ROLE_ID=#ROLE_ID#,RIGHADD=#RIGHADD#,RIGHDEL=#RIGHDEL#,RIGHEDI=#RIGHEDI#,RIGHVIE=#RIGHVIE#,RIGHAUD=#RIGHAUD# 
+		WHERE ROW_ID=#ROW_ID#
+    ]]>
+  </statement>
+  
+   <statement id="[insert-by-vo]" parameterClass="DireautDetailVO">
+    <![CDATA[
+    INSERT INTO MD_DIRECTORY_AUTHORIZATION(ROW_ID,CREATED_BY,LAST_UPD_BY,CREATED_TIME,LAST_UPD_TIME,DIRECTORY_ID,ROLE_ID,RIGHADD,RIGHDEL,RIGHEDI,RIGHVIE,RIGHAUD) 
+	VALUES (#ROW_ID#,#CREATED_BY#,#LAST_UPD_BY#,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,#DIRECTORY_ID#,#ROLE_ID#,#RIGHADD#,#RIGHDEL#,#RIGHEDI#,#RIGHVIE#,#RIGHAUD#)
+    ]]>
+  </statement>
+  
+   <statement id="[insert-by-path]" parameterClass="Map">
+    <![CDATA[
+    INSERT INTO MD_DIRECTORY_AUTHORIZATION(ROW_ID,CREATED_BY,LAST_UPD_BY,CREATED_TIME,LAST_UPD_TIME,DIRECTORY_ID,ROLE_ID,RIGHADD,RIGHDEL,RIGHEDI,RIGHVIE,RIGHAUD) 
+	SELECT F_SM_GET_ROW_ID(),#USER_ID#,#USER_ID#,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,a.ROW_ID,#ROLE_ID#,#RIGHADD#,#RIGHDEL#,#RIGHEDI#,#RIGHVIE#,#RIGHAUD#
+	FROM MD_DIRECTORY a
+	WHERE a.PATH LIKE '$DIRPATH$'
+    ]]>
+  </statement>
+
+</sqlMap>

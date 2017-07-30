@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+    <form-beans>
+        <form-bean name="COMMON_SM_USERONLINE_FORM" type="com.handao.platform.sm.userOnline.web.UserOnlineForm"/>        
+    </form-beans>
+    <action-mappings>
+	  <action name="COMMON_SM_USERONLINE_FORM" parameter="method" path="/sm/userOnline/UserOnlineList" type="com.handao.platform.sm.userOnline.web.UserOnlineListAction">
+         <forward name="list" path="/platform/jsp/sm/userOnline/userOnlineList.jsp" />
+      </action>
+	</action-mappings>
+	<message-resources key="common.sm.useronline"  parameter="com.handao.platform.sm.userOnline.web.MessageMapping"/>
+</struts-config>

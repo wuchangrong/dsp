@@ -1,0 +1,49 @@
+BODY {
+SCROLLBAR-FACE-COLOR: #D6E7EF; 
+SCROLLBAR-HIGHLIGHT-COLOR: #E2E9F6; 
+SCROLLBAR-SHADOW-COLOR: #294A7A; 
+SCROLLBAR-3DLIGHT-COLOR: #5B68B1; 
+SCROLLBAR-ARROW-COLOR: #294A7A; 
+SCROLLBAR-TRACK-COLOR: #E2E9F6; 
+SCROLLBAR-DARKSHADOW-COLOR: #ffffff; 
+FONT-SIZE: 12px;
+MARGIN: 0px;
+FONT-FAMILY: ËÎÌו;
+margin-top: 0px;
+margin-right: 0px;
+margin-left: 0px;
+margin-bottom:0px;
+background-color: #ffffff
+}
+.deskpanelTable{
+background-color:#76C2E4;
+margin-top:5px;
+}
+.deskpanelContent{
+background-color:#ffffff;
+}
+.deskTitleTable{
+margin-top:5px;
+}
+.deskTitleTable td{
+font-weight:bold; 
+color:#334A8E
+}
+.deskTableline{
+border-bottom:1px solid #AAA7A0;
+}
+.CMonth{
+background-color:#FDF571;
+}
+.CnoMonth{
+background-color:#F7F7F7;
+}
+.CdefaultMonth{
+background-color:#FFFFFF;
+}
+.noteListTd{
+background-color:#E4F1FC; border-bottom:2px #AAA7A0 solid
+}
+.noteListFoot{
+background-color:#F7F7F7;border-top:1px #AAA7A0 solid;color:#334A8E
+}

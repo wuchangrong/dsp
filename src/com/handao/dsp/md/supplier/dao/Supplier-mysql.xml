@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.md.supplier.Supplier">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="SupplierVO" type="com.handao.dsp.md.supplier.vo.SupplierVO"/>
+  <typeAlias alias="AFTreeNodeMap" type="com.handao.platform.framework.util.tree.AFTreeNodeMap"/>
+
+  <!-- 如果resultmap对应具体的vo对象，则需要配置vo中int、long、float、double等类型字段的nullValue属性-->
+  <resultMap id="SupplierResult" class="SupplierVO">
+    <result property="SUP_ACCOUNT_NO" column="SUP_ACCOUNT_NO" />
+    <result property="SUP_ADDR" column="SUP_ADDR" />
+    <result property="SUP_CODE_P1" column="SUP_CODE_P1" />
+    <result property="SUP_CONTACTPERSON" column="SUP_CONTACTPERSON" />
+    <result property="SUP_CREATED_BY" column="SUP_CREATED_BY" nullValue="0" />
+    <result property="SUP_CREATED_TIME" column="SUP_CREATED_TIME" />
+    <result property="SUP_DEPOSITARY_BANK" column="SUP_DEPOSITARY_BANK" />
+    <result property="SUP_DISTRICTID" column="SUP_DISTRICTID" nullValue="0" />
+    <result property="SUP_LAST_UPD_BY" column="SUP_LAST_UPD_BY" nullValue="0" />
+    <result property="SUP_LAST_UPD_TIME" column="SUP_LAST_UPD_TIME" />
+    <result property="SUP_LEGAL_PERSON" column="SUP_LEGAL_PERSON" />
+    <result property="SUP_MODIFICATION_NUM" column="SUP_MODIFICATION_NUM" nullValue="0" />
+    <result property="SUP_PROVINCEID" column="SUP_PROVINCEID" nullValue="0" />
+    <result property="SUP_ROW_ID" column="SUP_ROW_ID" />
+    <result property="SUP_SHORT_CODE" column="SUP_SHORT_CODE" />
+    <result property="SUP_STATUS" column="SUP_STATUS" />
+    <result property="SUP_SUPPLIERCODE" column="SUP_SUPPLIERCODE" />
+    <result property="SUP_SUPPLIERDESC" column="SUP_SUPPLIERDESC" />
+    <result property="SUP_TAX_NO" column="SUP_TAX_NO" />
+    <result property="SUP_TEL" column="SUP_TEL" />
+    <result property="SUP_THESYSTEM" column="SUP_THESYSTEM" />
+    <result property="STATUSNAME" column="STATUSNAME" />
+  </resultMap>
+ 
+
+
+  <statement id="[search-by-condition]" resultMap="SupplierResult">
+    <![CDATA[
+    SELECT SUP.ACCOUNT_NO SUP_ACCOUNT_NO,SUP.ADDR SUP_ADDR,SUP.CODE_P1 SUP_CODE_P1,SUP.CONTACT_PERSON SUP_CONTACTPERSON,SUP.CREATED_BY SUP_CREATED_BY,SUP.CREATED_TIME SUP_CREATED_TIME,SUP.DEPOSITARY_BANK SUP_DEPOSITARY_BANK,SUP.DISTRICT_ID SUP_DISTRICTID,SUP.LAST_UPD_BY SUP_LAST_UPD_BY,SUP.LAST_UPD_TIME SUP_LAST_UPD_TIME,SUP.LEGAL_PERSON SUP_LEGAL_PERSON,SUP.MODIFICATION_NUM SUP_MODIFICATION_NUM,SUP.PROVINCE_ID SUP_PROVINCEID,SUP.ROW_ID SUP_ROW_ID,SUP.SHORT_CODE SUP_SHORT_CODE,SUP.STATUS SUP_STATUS,SUP.SUPPLIERCODE SUP_SUPPLIERCODE,SUP.SUPPLIERDESC SUP_SUPPLIERDESC,SUP.TAX_NO SUP_TAX_NO,SUP.TEL SUP_TEL,SUP.THESYSTEM SUP_THESYSTEM 
+    ,CASE WHEN SUP.STATUS = '0' THEN '无效' ELSE '有效' END AS STATUSNAME
+    FROM MD_SUPPLIER SUP 
+    WHERE 1=1 
+    ]]>
+    <isNotEmpty prepend="and" property="SUP_DISTRICTID">
+      <![CDATA[SUP.DISTRICT_ID = #SUP_DISTRICTID#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="SUP_PROVINCEID">
+      <![CDATA[SUP.PROVINCE_ID = #SUP_PROVINCEID#]]>
+    </isNotEmpty>
+
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="SupplierResult">
+    <![CDATA[
+    SELECT SUP.ACCOUNT_NO SUP_ACCOUNT_NO,SUP.ADDR SUP_ADDR,SUP.CODE_P1 SUP_CODE_P1,SUP.CONTACT_PERSON SUP_CONTACTPERSON,SUP.CREATED_BY SUP_CREATED_BY,SUP.CREATED_TIME SUP_CREATED_TIME,SUP.DEPOSITARY_BANK SUP_DEPOSITARY_BANK,SUP.DISTRICT_ID SUP_DISTRICTID,SUP.LAST_UPD_BY SUP_LAST_UPD_BY,SUP.LAST_UPD_TIME SUP_LAST_UPD_TIME,SUP.LEGAL_PERSON SUP_LEGAL_PERSON,SUP.MODIFICATION_NUM SUP_MODIFICATION_NUM,SUP.PROVINCE_ID SUP_PROVINCEID,SUP.ROW_ID SUP_ROW_ID,SUP.SHORT_CODE SUP_SHORT_CODE,SUP.STATUS SUP_STATUS,SUP.SUPPLIERCODE SUP_SUPPLIERCODE,SUP.SUPPLIERDESC SUP_SUPPLIERDESC,SUP.TAX_NO SUP_TAX_NO,SUP.TEL SUP_TEL,SUP.THESYSTEM SUP_THESYSTEM 
+     ,CASE WHEN SUP.STATUS = '0' THEN '无效' ELSE '有效' END AS STATUSNAME
+    FROM MD_SUPPLIER SUP 
+    WHERE 1=1 AND SUP.ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM MD_SUPPLIER 
+    WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="SupplierVO">
+    <![CDATA[
+    UPDATE MD_SUPPLIER
+    SET ACCOUNT_NO=#SUP_ACCOUNT_NO#,ADDR=#SUP_ADDR#,CODE_P1=#SUP_CODE_P1#,CONTACT_PERSON=#SUP_CONTACTPERSON#,DEPOSITARY_BANK=#SUP_DEPOSITARY_BANK#,DISTRICT_ID=#SUP_DISTRICTID#,LAST_UPD_BY=#SUP_LAST_UPD_BY#,LAST_UPD_TIME=current_date,LEGAL_PERSON=#SUP_LEGAL_PERSON#,MODIFICATION_NUM=MODIFICATION_NUM+1,PROVINCE_ID=#SUP_PROVINCEID#,SHORT_CODE=#SUP_SHORT_CODE#,STATUS=#SUP_STATUS#,SUPPLIERCODE=#SUP_SUPPLIERCODE#,SUPPLIERDESC=#SUP_SUPPLIERDESC#,TAX_NO=#SUP_TAX_NO#,TEL=#SUP_TEL#,THESYSTEM=#SUP_THESYSTEM#
+    WHERE ROW_ID=#SUP_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="SupplierVO">
+    <![CDATA[
+    INSERT INTO MD_SUPPLIER(ACCOUNT_NO,ADDR,CODE_P1,CONTACT_PERSON,CREATED_BY,DEPOSITARY_BANK,DISTRICT_ID,LAST_UPD_BY,LAST_UPD_TIME,LEGAL_PERSON,MODIFICATION_NUM,PROVINCE_ID,SHORT_CODE,STATUS,SUPPLIERCODE,SUPPLIERDESC,TAX_NO,TEL,THESYSTEM) 
+    VALUES(#SUP_ACCOUNT_NO#,#SUP_ADDR#,#SUP_CODE_P1#,#SUP_CONTACTPERSON#,#SUP_CREATED_BY#,#SUP_DEPOSITARY_BANK#,#SUP_DISTRICTID#,#SUP_LAST_UPD_BY#,current_date,#SUP_LEGAL_PERSON#,0,#SUP_PROVINCEID#,#SUP_SHORT_CODE#,#SUP_STATUS#,#SUP_SUPPLIERCODE#,#SUP_SUPPLIERDESC#,#SUP_TAX_NO#,#SUP_TEL#,#SUP_THESYSTEM#)
+    ]]>
+  </statement>
+
+	<statement id="NAVTREE-SUPPLIER" resultClass="AFTreeNodeMap" remapResults="true">
+	    <![CDATA[
+	   SELECT ROW_ID ID, coalesce(PARENT_REGION,-1) PID, REGION_CODE PCODE, REGION_NAME PDESC, '0', LEVEL LEVEL, 
+	   CASE  WHEN (ROW_ID IN (710000,810000,820000)  OR  LEVEL = 2)
+	              THEN 'true'
+	              ELSE 'false' END AS LEAF
+	   FROM CD_REGIONALISMS
+	   WHERE LEVEL < 3
+	    ]]>
+	</statement>
+
+</sqlMap>

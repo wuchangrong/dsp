@@ -1,0 +1,52 @@
+TD {
+	FONT-SIZE: 12px; LINE-HEIGHT: 18px
+}
+BODY {
+FONT-SIZE: 12px; 
+FONT-FAMILY: ËÎÌו; 
+margin-top: 0px;
+margin-right: 0px;
+margin-left: 0px;
+margin-bottom:0px; 
+background-color: #EAF3FA;
+SCROLLBAR-FACE-COLOR: #D6E7EF; 
+SCROLLBAR-HIGHLIGHT-COLOR: #E2E9F6; 
+SCROLLBAR-SHADOW-COLOR: #294A7A; 
+SCROLLBAR-3DLIGHT-COLOR: #5B68B1; 
+SCROLLBAR-ARROW-COLOR: #294A7A; 
+SCROLLBAR-TRACK-COLOR: #E2E9F6; 
+SCROLLBAR-DARKSHADOW-COLOR: #ffffff; 
+}
+.contentTable { background-color: #9EC8FF; font-size: 12px}
+.editTextLine
+{
+   BORDER-BOTTOM: #999999 1px solid;
+    BORDER-LEFT: #999999 1px solid;
+    BORDER-RIGHT: #999999 1px solid;
+    BORDER-TOP: #999999 1px solid;
+    FONT-SIZE: 9pt;
+  	background:#ffffff;
+	width:140px;
+
+    margin-bottom:-1px;
+}
+.moveLeft{
+cursor:hand;
+BORDER-BOTTOM: #75C6F3 1px solid;
+BORDER-LEFT: #75C6F3 1px solid;
+BORDER-RIGHT: #75C6F3 1px solid;
+BORDER-TOP: #75C6F3 1px solid;
+height: 20px;
+width:20px;
+background-image: url(../images/moveLeft.gif)
+}
+.moveRight{
+cursor:hand;
+BORDER-BOTTOM: #75C6F3 1px solid;
+BORDER-LEFT: #75C6F3 1px solid;
+BORDER-RIGHT: #75C6F3 1px solid;
+BORDER-TOP: #75C6F3 1px solid;
+height: 20px;
+width:20px;
+background-image: url(../images/moveRight.gif)
+}

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.md.employee.Employee">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="EmployeeVO" type="com.handao.dsp.md.employee.vo.EmployeeVO"/>
+
+
+  <!-- 如果resultmap对应具体的vo对象，则需要配置vo中int、long、float、double等类型字段的nullValue属性-->
+  <resultMap id="EmployeeResult" class="EmployeeVO">
+    <result property="EMP_ADDR" column="EMP_ADDR" />
+    <result property="EMP_BIRTHDAY" column="EMP_BIRTHDAY" />
+    <result property="EMP_COMPANYID" column="EMP_COMPANYID" nullValue="0" />
+    <result property="EMP_CREATED_BY" column="EMP_CREATED_BY" nullValue="0" />
+    <result property="EMP_CREATED_TIME" column="EMP_CREATED_TIME" />
+    <result property="EMP_DEGREE" column="EMP_DEGREE" nullValue="" />
+    <result property="EMP_DEPTID" column="EMP_DEPTID" nullValue="0" />
+    <result property="EMP_DUTY" column="EMP_DUTY" nullValue="0" />
+    <result property="EMP_EMAIL" column="EMP_EMAIL" />
+    <result property="EMP_EMPLOYEECODE" column="EMP_EMPLOYEECODE" />
+    <result property="EMP_EMPLOYEENAME" column="EMP_EMPLOYEENAME" />
+    <result property="EMP_IDCARD" column="EMP_IDCARD" />
+    <result property="EMP_LAST_UPD_BY" column="EMP_LAST_UPD_BY" nullValue="0" />
+    <result property="EMP_LAST_UPD_TIME" column="EMP_LAST_UPD_TIME" />
+    <result property="EMP_MODIFICATION_NUM" column="EMP_MODIFICATION_NUM" nullValue="0" />
+    <result property="EMP_PASSWORD" column="EMP_PASSWORD" />
+    <result property="EMP_PLACE" column="EMP_PLACE" nullValue="0" />
+    <result property="EMP_ROW_ID" column="EMP_ROW_ID" />
+    <result property="EMP_SEX" column="EMP_SEX" />
+    <result property="EMP_SHORT_CODE" column="EMP_SHORT_CODE" />
+    <result property="EMP_STATUS" column="EMP_STATUS" />
+    <result property="EMP_TEL" column="EMP_TEL" />
+    <result property="EMP_USER_NAME" column="EMP_USER_NAME" />
+    <result property="EMP_PLACE_NAME" column="EMP_PLACE_NAME" />
+    <result property="EMP_DEPT_NAME" column="EMP_DEPT_NAME" />
+    <result property="EMP_DUTY_NAME" column="EMP_DUTY_NAME" />
+    <result property="EMP_COMPANY_NAME" column="EMP_COMPANY_NAME" />
+    <result property="EMP_DEGREE_NAME" column="EMP_DEGREE_NAME" />
+    
+  </resultMap>
+ 
+
+
+  <statement id="[search-by-condition]" resultMap="EmployeeResult">
+    <![CDATA[
+    SELECT EMP.ADDR EMP_ADDR,EMP.BIRTHDAY EMP_BIRTHDAY,EMP.COMPANY_ID EMP_COMPANYID,EMP.CREATED_BY EMP_CREATED_BY,EMP.CREATED_TIME EMP_CREATED_TIME,EMP.DEGREE EMP_DEGREE,EMP.DEPT_ID EMP_DEPTID,EMP.DUTY EMP_DUTY,EMP.EMAIL EMP_EMAIL,EMP.EMPLOYEE_CODE EMP_EMPLOYEECODE,EMP.EMPLOYEE_NAME EMP_EMPLOYEENAME,EMP.IDCARD EMP_IDCARD,EMP.LAST_UPD_BY EMP_LAST_UPD_BY,EMP.LAST_UPD_TIME EMP_LAST_UPD_TIME,EMP.MODIFICATION_NUM EMP_MODIFICATION_NUM,EMP.PASSWORD EMP_PASSWORD,EMP.PLACE EMP_PLACE,EMP.ROW_ID EMP_ROW_ID,EMP.SEX EMP_SEX,EMP.SHORT_CODE EMP_SHORT_CODE,EMP.STATUS EMP_STATUS,EMP.TEL EMP_TEL,EMP.USER_NAME EMP_USER_NAME,CODE.CODE_NAME EMP_PLACE_NAME,MDP.DEPT_NAME EMP_DEPT_NAME,0 EMP_COMPANY_NAME,0 EMP_DUTY_NAME,0 EMP_DEGREE_NAME  
+    FROM MD_EMPLOYEE EMP 
+    LEFT JOIN SM_CODE_LIST CODE ON EMP.PLACE = CODE.CODE_VALUE  AND CODE.TYPE_CODE='PLACE' 
+    LEFT JOIN MD_DEPT MDP ON EMP.DEPT_ID = MDP.ROW_ID 
+    WHERE 1=1
+    ]]>
+    <isNotEmpty prepend="and" property="EMP_EMPLOYEECODE">
+      <![CDATA[EMP.EMPLOYEE_CODE like '$EMP_EMPLOYEECODE$%']]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="EMP_EMPLOYEENAME">
+      <![CDATA[EMP.EMPLOYEE_NAME like '%$EMP_EMPLOYEENAME$%' ]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="EMP_DEPT_ID">
+      <![CDATA[EMP.DEPT_ID = #EMP_DEPT_ID#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="EMP_PLACE">
+      <![CDATA[EMP.PLACE = #EMP_PLACE#]]>
+    </isNotEmpty>
+
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="EmployeeResult">
+    <![CDATA[	
+    SELECT EMP.ADDR EMP_ADDR,EMP.BIRTHDAY EMP_BIRTHDAY,EMP.COMPANY_ID EMP_COMPANYID,EMP.CREATED_BY EMP_CREATED_BY,
+	EMP.CREATED_TIME EMP_CREATED_TIME,EMP.DEGREE EMP_DEGREE,EMP.DEPT_ID EMP_DEPTID,EMP.DUTY EMP_DUTY,
+	EMP.EMAIL EMP_EMAIL,EMP.EMPLOYEE_CODE EMP_EMPLOYEECODE,EMP.EMPLOYEE_NAME EMP_EMPLOYEENAME,
+	EMP.IDCARD EMP_IDCARD,EMP.LAST_UPD_BY EMP_LAST_UPD_BY,EMP.LAST_UPD_TIME EMP_LAST_UPD_TIME,EMP.MODIFICATION_NUM EMP_MODIFICATION_NUM,
+	EMP.PASSWORD EMP_PASSWORD,EMP.PLACE EMP_PLACE,EMP.ROW_ID EMP_ROW_ID,EMP.SEX EMP_SEX,EMP.SHORT_CODE EMP_SHORT_CODE,EMP.STATUS EMP_STATUS,
+	EMP.TEL EMP_TEL,EMP.USER_NAME EMP_USER_NAME ,CODE.CODE_NAME EMP_PLACE_NAME,MDP.DEPT_NAME EMP_DEPT_NAME,
+	MCP.COMPANY_NAME EMP_COMPANY_NAME,CODE2.CODE_NAME EMP_DUTY_NAME,CODE3.CODE_NAME EMP_DEGREE_NAME         
+	FROM MD_EMPLOYEE EMP      
+	LEFT JOIN SM_CODE_LIST CODE ON EMP.PLACE = CODE.CODE_VALUE       AND CODE.TYPE_CODE='PLACE'
+	LEFT JOIN MD_DEPT MDP ON EMP.DEPT_ID = MDP.ROW_ID      
+	LEFT JOIN MD_COMPANY MCP ON EMP.COMPANY_ID = MCP.ROW_ID      
+	LEFT JOIN SM_CODE_LIST CODE2 ON EMP.DUTY = CODE2.CODE_VALUE AND CODE2.TYPE_CODE='DUTY'
+	LEFT JOIN SM_CODE_LIST CODE3 ON EMP.DEGREE = CODE3.CODE_VALUE       AND CODE3.TYPE_CODE='DEGREE'
+	WHERE 1=1 AND EMP.ROW_ID=#value# 
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM MD_EMPLOYEE 
+    WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="EmployeeVO">
+    <![CDATA[
+    UPDATE MD_EMPLOYEE
+    SET EMPLOYEE_CODE=#EMP_EMPLOYEECODE#,EMPLOYEE_NAME=#EMP_EMPLOYEENAME#,SHORT_CODE=#EMP_SHORT_CODE#,COMPANY_ID=#EMP_COMPANYID#,DEPT_ID=#EMP_DEPTID#,BIRTHDAY=#EMP_BIRTHDAY:DATE#,ADDR=#EMP_ADDR#,TEL=#EMP_TEL#,SEX=#EMP_SEX#,IDCARD=#EMP_IDCARD#,EMAIL=#EMP_EMAIL#,DEGREE=#EMP_DEGREE#,DUTY=#EMP_DUTY#,PLACE=#EMP_PLACE#,STATUS=#EMP_STATUS#,LAST_UPD_BY=#EMP_LAST_UPD_BY#,LAST_UPD_TIME=current_date,MODIFICATION_NUM=MODIFICATION_NUM+1  
+    WHERE ROW_ID=#EMP_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="EmployeeVO">
+    <![CDATA[
+    INSERT INTO MD_EMPLOYEE(ROW_ID,EMPLOYEE_CODE,EMPLOYEE_NAME,SHORT_CODE,COMPANY_ID,DEPT_ID,BIRTHDAY,ADDR,TEL,SEX,IDCARD,EMAIL,DEGREE,DUTY,PLACE,STATUS,CREATED_BY,LAST_UPD_BY,LAST_UPD_TIME) 
+    VALUES(#EMP_ROW_ID#,#EMP_EMPLOYEECODE#,#EMP_EMPLOYEENAME#,#EMP_SHORT_CODE#,#EMP_COMPANYID#,#EMP_DEPTID#,#EMP_BIRTHDAY:DATE#,#EMP_ADDR#,#EMP_TEL#,#EMP_SEX#,#EMP_IDCARD#,#EMP_EMAIL#,#EMP_DEGREE#,#EMP_DUTY#,#EMP_PLACE#,#EMP_STATUS#,#EMP_CREATED_BY#,#EMP_LAST_UPD_BY#,current_date)
+    ]]>
+  </statement>
+
+
+</sqlMap>

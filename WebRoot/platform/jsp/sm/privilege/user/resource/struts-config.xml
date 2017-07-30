@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+    <!-- ========== Form Bean Definitions =================================== -->
+    <form-beans>
+        <form-bean name="SM_PRIVILEGE_USER_AFUserForm" type="com.handao.platform.sm.privilege.user.web.AFUserForm"/>        
+
+    </form-beans>
+    <!-- ========== End of Form Bean Definitions =================================== -->
+
+    <!-- ========== Action Mapping Definitions ============================== -->
+    <action-mappings>
+
+	  <action name="SM_PRIVILEGE_USER_AFUserForm" parameter="method" path="/sm/privilege/user/User" type="com.handao.platform.sm.privilege.user.web.AFUserAction">
+            <forward name="list" path="/platform/jsp/sm/privilege/user/UserList.jsp" />
+            <forward name="list.do" path="/sm/privilege/user/User.do?method=doSearch"/>
+            <forward name="addIni.do" path="/sm/privilege/user/User.do?method=doAddIni&amp;doWhat=add"/>
+            <forward name="addEdit" path="/platform/jsp/sm/privilege/user/UserAddEdit.jsp?method=doAddEditIni"/>
+            <forward name="view" path="/platform/jsp/sm/privilege/user/UserView.jsp?method=doView"/>
+        </action>
+        
+ 
+  		<action name="SM_PRIVILEGE_USER_AFUserForm" parameter="method" path="/sm/privilege/user/UserProhibit" type="com.handao.platform.sm.privilege.user.web.AFUserAction">
+            <forward name="list" path="/platform/jsp/sm/privilege/user/UserProhibitList.jsp" />
+            <forward name="list.do" path="/sm/privilege/user/UserProhibit.do?method=doSearch"/>
+            <forward name="view" path="/platform/jsp/sm/privilege/user/UserView.jsp?method=doView"/> 
+        </action>
+
+       <action name="SM_PRIVILEGE_USER_AFUserForm" parameter="method" path="/sm/privilege/user/UserAuthorization" type="com.handao.platform.sm.privilege.user.web.AFUserAuthorizationAction">
+            <forward name="list" path="/platform/jsp/sm/privilege/user/UserAuthorizationList.jsp" />
+            <forward name="list.do" path="/sm/privilege/user/UserAuthorization.do?method=doSearch"/>
+          	<forward name="view" path="/platform/jsp/sm/privilege/user/UserView.jsp?method=doView"/>
+          	<forward name="assignRoleInit" path="/platform/jsp/sm/privilege/user/UserManageRole.jsp"/>
+        </action>
+	  </action-mappings>
+    <!-- ========== End of Action Mapping Definitions ============================== -->
+	<message-resources key="common.sm.privilege.user"  parameter="com.handao.platform.sm.privilege.user.web.MessageMapping"/>
+
+</struts-config>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+    <!-- ========== Form Bean Definitions =================================== -->
+    <form-beans>
+        <form-bean name="SM_PRIVILEGE_ROLE_AFRoleForm" type="com.handao.platform.sm.privilege.role.web.AFRoleForm"/>        
+
+    </form-beans>
+    <!-- ========== End of Form Bean Definitions =================================== -->
+
+    <!-- ========== Action Mapping Definitions ============================== -->
+    <action-mappings>
+
+	  <action name="SM_PRIVILEGE_ROLE_AFRoleForm" parameter="method" path="/sm/privilege/role/AFRoleDefine" type="com.handao.platform.sm.privilege.role.web.AFRoleAction">
+            <forward name="list" path="/platform/jsp/sm/privilege/role/RoleDefineList.jsp" />
+            <forward name="list.do" path="/sm/privilege/role/AFRoleDefine.do?method=doSearch"/>
+            <forward name="addIni.do" path="/sm/privilege/role/AFRoleDefine.do?method=doAddIni&amp;doWhat=add"/>
+            <forward name="addEdit" path="/platform/jsp/sm/privilege/role/RoleAddEdit.jsp?method=doAddEditIni"/>
+            <forward name="view" path="/platform/jsp/sm/privilege/role/RoleView.jsp?method=doView"/>
+            <forward name="assignProgramInit" path="/platform/jsp/sm/privilege/role/ProgramAssign.jsp"/>
+        </action>
+        
+        <action name="SM_PRIVILEGE_ROLE_AFRoleForm" parameter="method" path="/sm/privilege/role/AFRoleAssign" type="com.handao.platform.sm.privilege.role.web.AFRoleAction">
+            <forward name="list" path="/platform/jsp/sm/privilege/role/RoleAssignList.jsp" />
+            <forward name="list.do" path="/sm/privilege/role/AFRoleAssign.do?method=doSearch"/>
+            <forward name="assignUserInit" path="/platform/jsp/sm/privilege/role/UserAssign.jsp"/>
+        </action>
+ 
+
+	  </action-mappings>
+    <!-- ========== End of Action Mapping Definitions ============================== -->
+	<message-resources key="common.sm.privilege.role"  parameter="com.handao.platform.sm.privilege.role.web.MessageMapping"/>
+
+</struts-config>

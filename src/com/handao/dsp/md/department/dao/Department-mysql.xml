@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.md.department.Department">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="AFTreeNodeMap" type="com.handao.platform.framework.util.tree.AFTreeNodeMap"/>
+  <typeAlias alias="DepartmentVO" type="com.handao.dsp.md.department.vo.DepartmentVO"/>
+
+
+  <!-- 如果resultmap对应具体的vo对象，则需要配置vo中int、long、float、double等类型字段的nullValue属性-->
+  <resultMap id="DepartmentResult" class="DepartmentVO">
+    <result property="DEPT_COMPANY_ID" column="DEPT_COMPANY_ID" nullValue="0" />
+    <result property="DEPT_CURRENT_DATE" column="DEPT_CURRENT_DATE" />
+    <result property="DEPT_CURRENT_MONTH" column="DEPT_CURRENT_MONTH" />
+    <result property="DEPT_DEFAULT_UNIT" column="DEPT_DEFAULT_UNIT" />
+    <result property="DEPT_DEPT_CODE" column="DEPT_DEPT_CODE" />
+    <result property="DEPT_DEPT_NAME" column="DEPT_DEPT_NAME" />
+    <result property="DEPT_IS_LOCATION" column="DEPT_IS_LOCATION" />
+    <result property="DEPT_IS_VISITSALES" column="DEPT_IS_VISITSALES" />
+    <result property="DEPT_IS_WAREHOUSE" column="DEPT_IS_WAREHOUSE" />
+    <result property="DEPT_PARENT_DEPT" column="DEPT_PARENT_DEPT" nullValue="0" />
+    <result property="DEPT_ROW_ID" column="DEPT_ROW_ID" />
+    <result property="DEPT_SHORT_CODE" column="DEPT_SHORT_CODE" />
+    <result property="DEPT_STATUS" column="DEPT_STATUS" />
+    <result property="DEPT_CREATED_BY" column="DEPT_CREATED_BY" nullValue="0"/>
+    <result property="DEPT_LAST_UPD_BY" column="DEPT_LAST_UPD_BY" nullValue="0"/>
+    <result property="DEPT_MODIFICATION_NUM" column="DEPT_MODIFICATION_NUM" nullValue="0"/>
+    <result property="DEPT_RESERVED1" column="DEPT_RESERVED1" nullValue=""/>
+    <result property="DEPT_RESERVED2" column="DEPT_RESERVED2" nullValue=""/>
+    <result property="DEPT_RESERVED3" column="DEPT_RESERVED3" nullValue=""/>
+    <result property="DEPT_COMPANY_NAME" column="DEPT_COMPANY_NAME" nullValue=""/>
+    <result property="DEPT_PARENT_NAME" column="DEPT_PARENT_NAME" nullValue=""/>
+    <result property="DEPT_IS_SERVICE" column="DEPT_IS_SERVICE" nullValue=""/>
+
+  </resultMap>
+ 
+  <statement id="[search-by-condition]" resultMap="DepartmentResult">
+    <![CDATA[
+    SELECT DEPT.COMPANY_ID DEPT_COMPANY_ID,DEPT.BIZ_DATE DEPT_CURRENT_DATE,DEPT.BIZ_MONTH DEPT_CURRENT_MONTH,DEPT.DEFAULT_UNIT DEPT_DEFAULT_UNIT,DEPT.DEPT_CODE DEPT_DEPT_CODE,DEPT.DEPT_NAME DEPT_DEPT_NAME,DEPT.IS_LOCATION DEPT_IS_LOCATION,DEPT.IS_VISITSALES DEPT_IS_VISITSALES,DEPT.IS_WAREHOUSE DEPT_IS_WAREHOUSE,DEPT.PARENT_DEPT DEPT_PARENT_DEPT,DEPT.ROW_ID DEPT_ROW_ID,DEPT.SHORT_CODE DEPT_SHORT_CODE,DEPT.STATUS DEPT_STATUS,
+    DEPT.MODIFICATION_NUM DEPT_MODIFICATION_NUM, DEPT.CREATED_BY DEPT_CREATED_BY, DEPT.LAST_UPD_BY DEPT_LAST_UPD_BY, DEPT.RESERVED1 DEPT_RESERVED1,
+    DEPT.RESERVED2 DEPT_RESERVED2, DEPT.RESERVED3 DEPT_RESERVED3,'' DEPT_PARENT_NAME, '' DEPT_COMPANY_NAME, DEPT.IS_SERVICE DEPT_IS_SERVICE
+    FROM MD_DEPT DEPT
+    WHERE 1=1
+    ]]>
+    <isNotEmpty prepend="and" property="DEPT_PARENT_DEPT">
+      <![CDATA[DEPT.PARENT_DEPT = #DEPT_PARENT_DEPT#]]>
+    </isNotEmpty>
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="DepartmentResult">
+    <![CDATA[
+    SELECT DEPT.COMPANY_ID DEPT_COMPANY_ID,DEPT.BIZ_DATE DEPT_CURRENT_DATE,DEPT.BIZ_MONTH DEPT_CURRENT_MONTH,DEPT.DEFAULT_UNIT DEPT_DEFAULT_UNIT,DEPT.DEPT_CODE DEPT_DEPT_CODE,DEPT.DEPT_NAME DEPT_DEPT_NAME,DEPT.IS_LOCATION DEPT_IS_LOCATION,DEPT.IS_VISITSALES DEPT_IS_VISITSALES,DEPT.IS_WAREHOUSE DEPT_IS_WAREHOUSE,DEPT.PARENT_DEPT DEPT_PARENT_DEPT,DEPT.ROW_ID DEPT_ROW_ID,DEPT.SHORT_CODE DEPT_SHORT_CODE,DEPT.STATUS DEPT_STATUS,
+    DEPT.MODIFICATION_NUM DEPT_MODIFICATION_NUM, DEPT.CREATED_BY DEPT_CREATED_BY, DEPT.LAST_UPD_BY DEPT_LAST_UPD_BY, DEPT.RESERVED1 DEPT_RESERVED1,
+    DEPT.RESERVED2 DEPT_RESERVED2, DEPT.RESERVED3 DEPT_RESERVED3, COMPANY.COMPANY_NAME DEPT_COMPANY_NAME,
+	CASE WHEN DEPT.PARENT_DEPT IN (SELECT D1.ROW_ID FROM MD_DEPT D1) THEN (SELECT D2.DEPT_NAME FROM MD_DEPT D2 WHERE DEPT.PARENT_DEPT=D2.ROW_ID)
+		 ELSE (SELECT C1.COMPANY_NAME FROM MD_COMPANY C1 WHERE DEPT.PARENT_DEPT=C1.ROW_ID)END AS DEPT_PARENT_NAME, DEPT.IS_SERVICE DEPT_IS_SERVICE
+    FROM MD_DEPT DEPT,  MD_COMPANY COMPANY
+    WHERE DEPT.COMPANY_ID=COMPANY.ROW_ID AND DEPT.ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM MD_DEPT 
+    WHERE ROW_ID=#value# or parent_dept=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="DepartmentVO">
+    <![CDATA[
+    UPDATE MD_DEPT
+    SET DEPT_CODE=#DEPT_DEPT_CODE#,DEPT_NAME=#DEPT_DEPT_NAME#,SHORT_CODE=#DEPT_SHORT_CODE#,DEFAULT_UNIT=#DEPT_DEFAULT_UNIT#,IS_LOCATION=#DEPT_IS_LOCATION#,IS_VISITSALES=#DEPT_IS_VISITSALES#,IS_WAREHOUSE=#DEPT_IS_WAREHOUSE#,STATUS=#DEPT_STATUS#,LAST_UPD_BY=#DEPT_LAST_UPD_BY#,LAST_UPD_TIME=current_date,IS_SERVICE=#DEPT_IS_SERVICE#
+    WHERE ROW_ID=#DEPT_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="DepartmentVO">
+    <![CDATA[
+    INSERT INTO MD_ORG_UNIT(ROW_ID,UNIT_CODE,UNIT_NAME,SHORT_CODE,DEFAULT_UNIT,IS_LOCATION,IS_VISITSALES,IS_WAREHOUSE,STATUS,
+    	CREATED_BY,LAST_UPD_BY,LAST_UPD_TIME,COMPANY_ID,PARENT_UNIT,ORG_TYPE, IS_SERVICE) 
+    VALUES(#DEPT_ROW_ID#,#DEPT_DEPT_CODE#,#DEPT_DEPT_NAME#,#DEPT_SHORT_CODE#,#DEPT_DEFAULT_UNIT#,#DEPT_IS_LOCATION#,#DEPT_IS_VISITSALES#,#DEPT_IS_WAREHOUSE#,#DEPT_STATUS#,
+    	#DEPT_CREATED_BY#,#DEPT_LAST_UPD_BY#,current_date,#DEPT_COMPANY_ID#,#DEPT_PARENT_DEPT#,'12',#DEPT_IS_SERVICE#)
+    ]]>
+  </statement>
+
+	<statement id="navtree-department" resultClass="AFTreeNodeMap" remapResults="true">
+		<![CDATA[
+		select row_id as id, -1 as pid, company_code as pcode, company_name as pdesc,
+		 case when row_id in (select company_id from md_dept) then 'false' else 'true' end as leaf, 1 as is_company,
+		 row_id as company_id
+		from md_company
+		union all 
+		(select row_id as id, parent_dept as pid, dept_code as pcode, dept_name as pdesc, 
+		   case when row_id in (select parent_dept from md_dept) then 'false' else 'true' end as leaf, 0 as is_company,
+		   company_id as company_id
+		from md_dept)
+		]]>
+	</statement>
+
+</sqlMap>

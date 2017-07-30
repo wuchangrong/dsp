@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.sb.daily.route.RouteDaily">
+
+  <!-- Use type aliases to avoid typing the full classname every time-->
+  <typeAlias alias="RouteDailyVO" type="com.handao.dsp.sb.daily.route.vo.RouteDailyVO"/>
+    
+  <resultMap id="RouteDailyResult" class="RouteDailyVO">
+    <result property="ROW_ID" column="ROW_ID" nullValue="0"/>
+	<result property="CREATED_BY" column="CREATED_BY" nullValue="0"/>
+	<result property="CREATED_TIME" column="CREATED_TIME" />
+	<result property="LAST_UPD_BY" column="LAST_UPD_BY" nullValue="0"/>
+	<result property="LAST_UPD_TIME" column="LAST_UPD_TIME" />
+	<result property="MODIFICATION_NUM" column="MODIFICATION_NUM" nullValue="0"/>
+	<result property="COMPANY_ID" column="COMPANY_ID" nullValue="0"/>
+	<result property="DEPT_ID" column="DEPT_ID" nullValue="0"/>
+	<result property="VISIT_DATE" column="VISIT_DATE" />
+	<result property="REPORT_EMP" column="REPORT_EMP" />
+	<result property="REMARK" column="REMARK" />
+	<result property="RESERVE1" column="RESERVE1" />
+	<result property="RESERVE2" column="RESERVE2" />
+	<result property="RESERVE3" column="RESERVE3" />
+	<result property="IS_USING" column="IS_USING" />
+	<result property="STATUS" column="STATUS" />
+
+  </resultMap>
+
+  <statement id="[search-by-condition]" resultMap="RouteDailyResult">
+    <![CDATA[
+    SELECT ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_BY,LAST_UPD_TIME,MODIFICATION_NUM,COMPANY_ID,DEPT_ID,VISIT_DATE,REPORT_EMP,REMARK,RESERVE1,RESERVE2,RESERVE3,IS_USING,STATUS 
+	FROM SB_ROUTE_DAILY a WHERE 1=1  
+    ]]>
+    <isNotEmpty prepend="and" property="ROW_ID">
+      <![CDATA[A.ROW_ID = #ROW_ID#]]>
+    </isNotEmpty>  
+    <isNotEmpty prepend="and" property="IS_USING">
+      <![CDATA[A.IS_USING = #IS_USING#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="STATUS">
+      <![CDATA[A.STATUS = #STATUS#]]>
+    </isNotEmpty>   
+    <isNotEmpty prepend="and" property="VISIT_DATE_B">
+      <![CDATA[A.VISIT_DATE >= #VISIT_DATE_B#]]>
+    </isNotEmpty>   
+    <isNotEmpty prepend="and" property="VISIT_DATE_E">
+      <![CDATA[A.VISIT_DATE <= #VISIT_DATE_E#]]>
+    </isNotEmpty>        
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="RouteDailyResult">
+    <![CDATA[ 
+    SELECT ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_BY,LAST_UPD_TIME,MODIFICATION_NUM,COMPANY_ID,DEPT_ID,VISIT_DATE,REPORT_EMP,REMARK,RESERVE1,RESERVE2,RESERVE3,IS_USING,STATUS 
+	FROM SB_ROUTE_DAILY a WHERE a.ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SB_ROUTE_DAILY WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="RouteDailyVO">
+    <![CDATA[
+    UPDATE SB_ROUTE_DAILY SET LAST_UPD_BY=#LAST_UPD_BY#,LAST_UPD_TIME=CURRENT_TIMESTAMP,MODIFICATION_NUM=MODIFICATION_NUM+1,COMPANY_ID=#COMPANY_ID#,DEPT_ID=#DEPT_ID#,VISIT_DATE=#VISIT_DATE#,REPORT_EMP=#REPORT_EMP#,REMARK=#REMARK#,RESERVE1=#RESERVE1#,RESERVE2=#RESERVE2#,RESERVE3=#RESERVE3#,IS_USING=#IS_USING#,STATUS=#STATUS# 
+		WHERE ROW_ID=#ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="RouteDailyVO">
+    <![CDATA[
+    INSERT INTO SB_ROUTE_DAILY(ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_TIME,COMPANY_ID,DEPT_ID,VISIT_DATE,REPORT_EMP,REMARK,RESERVE1,RESERVE2,RESERVE3,IS_USING,STATUS) 
+	VALUES (#ROW_ID#,#CREATED_BY#,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,#COMPANY_ID#,#DEPT_ID#,#VISIT_DATE#,#REPORT_EMP#,#REMARK#,#RESERVE1#,#RESERVE2#,#RESERVE3#,#IS_USING#,#STATUS#)
+    ]]>
+  </statement>
+
+
+</sqlMap>

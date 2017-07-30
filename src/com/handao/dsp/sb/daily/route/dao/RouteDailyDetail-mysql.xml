@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.sb.daily.route.RouteDailyDetail">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="RouteDailyDetailVO" type="com.handao.dsp.sb.daily.route.vo.RouteDailyDetailVO"/>
+
+  <resultMap id="RouteDailyDetailResult" class="RouteDailyDetailVO">
+    <result property="ROW_ID" column="ROW_ID" nullValue="0"/>
+	<result property="CREATED_BY" column="CREATED_BY" nullValue="0"/>
+	<result property="CREATED_TIME" column="CREATED_TIME" />
+	<result property="LAST_UPD_BY" column="LAST_UPD_BY" nullValue="0"/>
+	<result property="LAST_UPD_TIME" column="LAST_UPD_TIME" />
+	<result property="MODIFICATION_NUM" column="MODIFICATION_NUM" nullValue="0"/>
+	<result property="DAILY_ID" column="DAILY_ID" nullValue="0"/>
+	<result property="COMPANY_ID" column="COMPANY_ID" nullValue="0"/>
+	<result property="DEPT_ID" column="DEPT_ID" nullValue="0"/>
+	<result property="VISIT_DATE" column="VISIT_DATE" />
+	<result property="EMP_ID" column="EMP_ID" nullValue="0"/>
+	<result property="EMP_NAME" column="EMP_NAME" />
+	<result property="BEGIN_TIME" column="BEGIN_TIME" />
+	<result property="END_TIME" column="END_TIME" />
+	<result property="CAR_NO" column="CAR_NO" />
+	<result property="CITY" column="CITY" />
+	<result property="COUNTY" column="COUNTY" />
+	<result property="TOWNS" column="TOWNS" />
+	<result property="VILLAGE" column="VILLAGE" />
+	<result property="VISIT_TYPE" column="VISIT_TYPE" />
+	<result property="RESERVE1" column="RESERVE1" />
+	<result property="RESERVE2" column="RESERVE2" />
+	<result property="RESERVE3" column="RESERVE3" />
+	<result property="IS_USING" column="IS_USING" />
+	<result property="STATUS" column="STATUS" />
+
+  </resultMap>
+
+  <statement id="[search-by-condition]" parameterClass="long" resultMap="RouteDailyDetailResult">
+    <![CDATA[
+    SELECT ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_BY,LAST_UPD_TIME,MODIFICATION_NUM,DAILY_ID,COMPANY_ID,DEPT_ID,VISIT_DATE,EMP_ID,EMP_NAME,BEGIN_TIME,END_TIME,CAR_NO,CITY,COUNTY,TOWNS,VILLAGE,VISIT_TYPE,RESERVE1,RESERVE2,RESERVE3,IS_USING,STATUS 
+	FROM SB_ROUTE_DAILY_REC a WHERE 1=1 
+    ]]>
+  </statement>
+  
+  <statement id="[search-by-masterid]" parameterClass="long" resultMap="RouteDailyDetailResult">
+    <![CDATA[
+    SELECT ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_BY,LAST_UPD_TIME,MODIFICATION_NUM,DAILY_ID,COMPANY_ID,DEPT_ID,VISIT_DATE,EMP_ID,EMP_NAME,BEGIN_TIME,END_TIME,CAR_NO,CITY,COUNTY,TOWNS,VILLAGE,VISIT_TYPE,RESERVE1,RESERVE2,RESERVE3,IS_USING,STATUS 
+	FROM SB_ROUTE_DAILY_REC row WHERE 1=1 AND row.DAILY_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultClass="RouteDailyDetailVO">
+    <![CDATA[
+    SELECT ROW_ID,CREATED_BY,CREATED_TIME,LAST_UPD_BY,LAST_UPD_TIME,MODIFICATION_NUM,DAILY_ID,COMPANY_ID,DEPT_ID,VISIT_DATE,EMP_ID,EMP_NAME,BEGIN_TIME,END_TIME,CAR_NO,CITY,COUNTY,TOWNS,VILLAGE,VISIT_TYPE,RESERVE1,RESERVE2,RESERVE3,IS_USING,STATUS 
+	FROM SB_ROUTE_DAILY_REC a WHERE 1=1  AND d.ROW_ID=#value#
+    ]]>
+  </statement>
+  
+  <statement id="[delete-by-vo]" parameterClass="RouteDailyDetailVO">
+    <![CDATA[
+    DELETE FROM SB_ROUTE_DAILY_REC WHERE ROW_ID=#ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-masterid]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SB_ROUTE_DAILY_REC WHERE DAILY_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="RouteDailyDetailVO">
+    <![CDATA[
+    UPDATE SB_ROUTE_DAILY_REC SET LAST_UPD_BY=#LAST_UPD_BY#,LAST_UPD_TIME=CURRENT_TIMESTAMP,MODIFICATION_NUM=MODIFICATION_NUM+1,DAILY_ID=#DAILY_ID#,COMPANY_ID=#COMPANY_ID#,DEPT_ID=#DEPT_ID#,VISIT_DATE=#VISIT_DATE#,EMP_ID=#EMP_ID#,EMP_NAME=#EMP_NAME#,BEGIN_TIME=#BEGIN_TIME#,END_TIME=#END_TIME#,CAR_NO=#CAR_NO#,CITY=#CITY#,COUNTY=#COUNTY#,TOWNS=#TOWNS#,VILLAGE=#VILLAGE#,VISIT_TYPE=#VISIT_TYPE#,RESERVE1=#RESERVE1#,RESERVE2=#RESERVE2#,RESERVE3=#RESERVE3#,IS_USING=#IS_USING#,STATUS=#STATUS# 
+		WHERE ROW_ID=#ROW_ID#
+    ]]>
+  </statement>
+  
+   <statement id="[insert-by-vo]" parameterClass="RouteDailyDetailVO">
+    <![CDATA[
+    INSERT INTO SB_ROUTE_DAILY_REC(CREATED_BY,CREATED_TIME,LAST_UPD_TIME,DAILY_ID,COMPANY_ID,DEPT_ID,VISIT_DATE,EMP_ID,EMP_NAME,BEGIN_TIME,END_TIME,CAR_NO,CITY,COUNTY,TOWNS,VILLAGE,VISIT_TYPE,RESERVE1,RESERVE2,RESERVE3,IS_USING,STATUS) 
+	VALUES (#CREATED_BY#,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,#DAILY_ID#,#COMPANY_ID#,#DEPT_ID#,#VISIT_DATE#,#EMP_ID#,#EMP_NAME#,#BEGIN_TIME#,#END_TIME#,#CAR_NO#,#CITY#,#COUNTY#,#TOWNS#,#VILLAGE#,#VISIT_TYPE#,#RESERVE1#,#RESERVE2#,#RESERVE3#,#IS_USING#,#STATUS#)
+    ]]>
+  </statement>
+  
+
+</sqlMap>

@@ -1,0 +1,43 @@
+/*
+ * Ext JS Library 2.0 Beta 1
+ * Copyright(c) 2006-2007, Ext JS, LLC.
+ * licensing@extjs.com
+ * 
+ * http://extjs.com/license
+ */
+
+.x-tree-node-check-none {
+	border: 0 none;
+	height: 18px;
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
+	width: 16px;
+	background-position:center;
+    background-repeat: no-repeat;
+	background-image:url(../images/default/tree/checkbox-none.gif);
+}
+
+.x-tree-node-check-all {
+	border: 0 none;
+	height: 18px;
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
+	width: 16px;
+	background-position:center;
+    background-repeat: no-repeat;
+	background-image:url(../images/default/tree/checkbox-all.gif);
+}
+
+.x-tree-node-check-partly {
+	border: 0 none;
+	height: 18px;
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
+	width: 16px;
+	background-position:center;
+    background-repeat: no-repeat;
+	background-image:url(../images/default/tree/checkbox-partly.gif);
+}

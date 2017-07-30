@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.md.directory.directoryman.Directory">
+
+  <!-- Use type aliases to avoid typing the full classname every time-->
+  <typeAlias alias="DirectoryVO" type="com.handao.dsp.md.directory.directoryman.vo.DirectoryVO"/>
+  <typeAlias alias="AFTreeNodeMap" type="com.handao.platform.framework.util.tree.AFTreeNodeMap"/>
+    
+  <resultMap id="DirectoryResult" class="DirectoryVO">
+    <result property="ROW_ID" column="a_ROW_ID" nullValue="0"/>
+	<result property="CREATED_BY" column="a_CREATED_BY" nullValue="0"/>
+	<result property="CREATED_TIME" column="a_CREATED_TIME" />
+	<result property="LAST_UPD_BY" column="a_LAST_UPD_BY" nullValue="0"/>
+	<result property="LAST_UPD_TIME" column="a_LAST_UPD_TIME" />
+	<result property="MODIFICATION_NUM" column="a_MODIFICATION_NUM" nullValue="0"/>
+	<result property="DIR_CODE" column="a_DIR_CODE" />
+	<result property="DIR_NAME" column="a_DIR_NAME" />
+	<result property="DIRECLA_CODE" column="a_DIRECLA_CODE" />
+	<result property="DIRELEV_NO" column="a_DIRELEV_NO" nullValue="0"/>
+	<result property="PARENT_DIR" column="a_PARENT_DIR" nullValue="0"/>
+	<result property="PATH" column="a_PATH" />
+	<result property="REMARK" column="a_REMARK" />
+	<result property="ICONBIG_URL" column="a_ICONBIG_URL" />
+	<result property="ICONSMA_URL" column="a_ICONSMA_URL" />
+	<result property="ISVALID" column="a_ISVALID" />
+	<result property="ISVALID_VALUE" column="ISVALID_VALUE" />
+	<result property="PARENT_DIR_NAME" column="PARENT_DIR_NAME" />
+	<result property="DIRECLA_VALUE" column="DIRECLA_VALUE" />
+  </resultMap>
+
+  <statement id="[search-by-condition]" resultMap="DirectoryResult">
+    <![CDATA[
+    SELECT a.ROW_ID a_ROW_ID,a.CREATED_BY a_CREATED_BY,a.CREATED_TIME a_CREATED_TIME,a.LAST_UPD_BY a_LAST_UPD_BY,a.LAST_UPD_TIME a_LAST_UPD_TIME,a.MODIFICATION_NUM a_MODIFICATION_NUM,
+    	a.DIR_CODE a_DIR_CODE,a.DIR_NAME a_DIR_NAME,a.DIRECLA_CODE a_DIRECLA_CODE,a.DIRELEV_NO a_DIRELEV_NO,a.PARENT_DIR a_PARENT_DIR,a.PATH a_PATH,a.REMARK a_REMARK,a.ICONBIG_URL a_ICONBIG_URL,a.ICONSMA_URL a_ICONSMA_URL,a.ISVALID a_ISVALID,
+    	b.CODE_NAME DIRECLA_VALUE,c.CODE_NAME ISVALID_VALUE,d.DIR_NAME PARENT_DIR_NAME
+	FROM MD_DIRECTORY a 
+	LEFT JOIN SM_CODE_LIST b ON b.TYPE_CODE='MD_DIRECLA' AND b.CODE_VALUE=a.DIRECLA_CODE
+	LEFT JOIN SM_CODE_LIST c ON c.TYPE_CODE='MD_TRUEFAL' AND c.CODE_VALUE=a.ISVALID
+	LEFT JOIN MD_DIRECTORY d ON d.ROW_ID=a.PARENT_DIR
+	WHERE 1=1  
+    ]]>    
+    <isNotEmpty prepend="and" property="PARENT_DIR_ID">
+      <![CDATA[a.PARENT_DIR = #PARENT_DIR_ID#]]>
+    </isNotEmpty>    
+    <isNotEmpty prepend="and" property="DIRECLA_CODE">
+      <![CDATA[a.DIRECLA_CODE = #DIRECLA_CODE#]]>
+    </isNotEmpty>    
+    <isNotEmpty prepend="and" property="PARENT_DIR_NAME">
+      <![CDATA[d.PARENT_DIR_NAME = #PARENT_DIR_NAME#]]>
+    </isNotEmpty>    
+     
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="DirectoryResult">
+    <![CDATA[ 
+    SELECT a.ROW_ID a_ROW_ID,a.CREATED_BY a_CREATED_BY,a.CREATED_TIME a_CREATED_TIME,a.LAST_UPD_BY a_LAST_UPD_BY,a.LAST_UPD_TIME a_LAST_UPD_TIME,a.MODIFICATION_NUM a_MODIFICATION_NUM,
+    	a.DIR_CODE a_DIR_CODE,a.DIR_NAME a_DIR_NAME,a.DIRECLA_CODE a_DIRECLA_CODE,a.DIRELEV_NO a_DIRELEV_NO,a.PARENT_DIR a_PARENT_DIR,a.PATH a_PATH,a.REMARK a_REMARK,a.ICONBIG_URL a_ICONBIG_URL,a.ICONSMA_URL a_ICONSMA_URL,a.ISVALID a_ISVALID,
+    	b.CODE_NAME DIRECLA_VALUE,c.CODE_NAME ISVALID_VALUE,d.DIR_NAME PARENT_DIR_NAME
+	FROM MD_DIRECTORY a 
+	LEFT JOIN SM_CODE_LIST b ON b.TYPE_CODE='MD_DIRECLA' AND b.CODE_VALUE=a.DIRECLA_CODE
+	LEFT JOIN SM_CODE_LIST c ON c.TYPE_CODE='MD_TRUEFAL' AND c.CODE_VALUE=a.ISVALID
+	LEFT JOIN MD_DIRECTORY d ON d.ROW_ID=a.PARENT_DIR
+	WHERE a.ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM MD_DIRECTORY WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="DirectoryVO">
+    <![CDATA[
+    UPDATE MD_DIRECTORY SET LAST_UPD_BY=#LAST_UPD_BY#,LAST_UPD_TIME=CURRENT_TIMESTAMP,MODIFICATION_NUM=MODIFICATION_NUM+1,DIR_CODE=#DIR_CODE#,DIR_NAME=#DIR_NAME#,DIRECLA_CODE=#DIRECLA_CODE#,DIRELEV_NO=#DIRELEV_NO#,PARENT_DIR=#PARENT_DIR#,PATH=#PATH#,REMARK=#REMARK#,ICONBIG_URL=#ICONBIG_URL#,ICONSMA_URL=#ICONSMA_URL#,ISVALID=#ISVALID# 
+	WHERE ROW_ID=#ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="DirectoryVO">
+    <![CDATA[
+    INSERT INTO MD_DIRECTORY(ROW_ID,CREATED_BY,LAST_UPD_BY,CREATED_TIME,LAST_UPD_TIME,DIR_CODE,DIR_NAME,DIRECLA_CODE,DIRELEV_NO,PARENT_DIR,PATH,REMARK,ICONBIG_URL,ICONSMA_URL,ISVALID) 
+	VALUES (#ROW_ID#,#CREATED_BY#,#LAST_UPD_BY#,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,#DIR_CODE#,#DIR_NAME#,#DIRECLA_CODE#,#DIRELEV_NO#,#PARENT_DIR#,#PATH#,#REMARK#,#ICONBIG_URL#,#ICONSMA_URL#,#ISVALID#)
+    ]]>
+  </statement>
+
+  <select id="[navtree-directory]" resultClass="AFTreeNodeMap" remapResults="true">
+	SELECT distinct c.ROW_ID ID, coalesce(c.PARENT_DIR,-1) PID, c.DIR_CODE PCODE, c.DIR_NAME PDESC, '0', c.DIRELEV_NO LEVEL, 
+	CASE  WHEN p.ROW_ID is null THEN 'true' ELSE 'false' END AS LEAF
+	FROM MD_DIRECTORY c
+	LEFT JOIN MD_DIRECTORY p ON p.PARENT_DIR=c.ROW_ID
+  </select>
+</sqlMap>

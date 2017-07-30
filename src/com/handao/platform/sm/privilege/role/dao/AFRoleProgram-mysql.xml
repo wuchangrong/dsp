@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="common.sm.privilege.role.RoleProgram">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="AFRoleProgramVO" type="com.handao.platform.sm.privilege.role.vo.AFRoleProgramVO"/>
+ 
+  <resultMap id="AFRoleProgramResult" class="AFRoleProgramVO">
+    <result property="smrp_ROW_ID" column="smrp_ROW_ID" nullValue="-1" />
+    <result property="smrp_ROLE_ID" column="smrp_ROLE_ID" nullValue="-1" />
+    <result property="smrp_PROGRAM_ID" column="smrp_PROGRAM_ID" nullValue="-1" />
+    
+  </resultMap>
+
+  <statement id="[search-by-condition]" resultMap="AFRoleProgramResult">
+    <![CDATA[
+    SELECT smrp.ROW_ID smrp_ROW_ID,smrp.ROLE_ID smrp_ROLE_ID,smrp.PROGRAM_ID smrp_PROGRAM_ID 
+    	FROM SM_ROLE_PROGRAM smrp 
+    	WHERE smrp.DELETED_FLAG = '0'  
+    ]]>
+    <isNotEmpty prepend="and" property="smrp_ROLE_ID">
+      <![CDATA[SMRP.ROLE_ID = #smrp_ROLE_ID#]]>
+    </isNotEmpty>
+  
+    </statement>
+    
+    <!-- 2008-12-24 add by hechunjian start -->
+    <statement id="[search-by-masterid]" parameterClass="long" resultMap="AFRoleProgramResult">
+    <![CDATA[
+    SELECT smrp.ROW_ID smrp_ROW_ID,smrp.ROLE_ID smrp_ROLE_ID,smrp.PROGRAM_ID smrp_PROGRAM_ID 
+    	FROM SM_ROLE_PROGRAM smrp 
+    	WHERE smrp.DELETED_FLAG = '0' AND smrp.ROLE_ID = #value#
+    ]]>
+    </statement>
+    
+    <statement id="[delete-by-masterid]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SM_ROLE_PROGRAM   
+    WHERE ROLE_ID=#value#
+    ]]>
+    </statement>
+    <!-- 2008-12-24 add by hechunjian end -->
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="AFRoleProgramResult">
+    <![CDATA[
+    SELECT smrp.ROW_ID smrp_ROW_ID,smrp.ROLE_ID smrp_ROLE_ID,smrp.PROGRAM_ID smrp_PROGRAM_ID 
+    	FROM SM_ROLE_PROGRAM smrp 
+    	WHERE smrp.DELETED_FLAG = '0' AND smrp.ROW_ID = #value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SM_ROLE_PROGRAM   
+    WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="AFRoleProgramVO">
+    <![CDATA[
+    UPDATE SM_ROLE_PROGRAM  
+    SET ROLE_ID=#smrp_ROLE_ID#,PROGRAM_ID=#smrp_PROGRAM_ID#,LAST_UPD_BY=#_userID#,LAST_UPD_DATE=Current timestamp,MODIFICATION_NUM=MODIFICATION_NUM+1 
+    WHERE ROW_ID=#smrp_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="AFRoleProgramVO">
+    <![CDATA[
+    INSERT INTO SM_ROLE_PROGRAM(ROLE_ID,PROGRAM_ID,DELETED_FLAG,ORIGIN_FLAG,ORIGIN_APP,CREATED_BY,CREATED_DATE) 
+    VALUES(#smrp_ROLE_ID#,#smrp_PROGRAM_ID#,'0',#_originFlag#,#_originApp#,#_userID#,current_date)
+    ]]>
+  </statement>
+  
+  <select id="[search-programs-by-roleid]" parameterClass="long" resultClass="java.util.HashMap">
+    <![CDATA[
+	SELECT A.ROW_ID,
+		A.PARENT_MODULE_ID,
+		A.PROGRAM_NAME,
+		B.PROGRAM_ID 
+	FROM SM_PROGRAM A 
+			LEFT JOIN SM_ROLE_PROGRAM B 
+			ON A.ROW_ID = B.PROGRAM_ID AND
+			B.DELETED_FLAG='0' AND
+			ROLE_ID = #value#
+	WHERE A.DELETED_FLAG = '0' AND
+		A.VISIBLE_FLAG='0' AND
+		CONTROL_FLAG='1'
+	]]>
+  </select>
+</sqlMap>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+    <!-- ========== Form Bean Definitions =================================== -->
+    <form-beans>
+        <form-bean name="WMS_BASE_SUPPLIER_SupplierForm" type="com.handao.dsp.md.supplier.web.SupplierForm"/>        
+
+    </form-beans>
+    <!-- ========== End of Form Bean Definitions =================================== -->
+
+    <!-- ========== Action Mapping Definitions ============================== -->
+    <action-mappings>
+
+	  <action name="WMS_BASE_SUPPLIER_SupplierForm" parameter="method" path="/dsp/md/supplier/Supplier" type="com.handao.dsp.md.supplier.web.SupplierAction">
+            <forward name="list" path="/jsp/dsp/md/supplier/SupplierList.jsp" />
+            <forward name="list.do" path="/dsp/md/supplier/Supplier.do?method=doSearch"/>
+            <forward name="addIni.do" path="/dsp/md/supplier/Supplier.do?method=doAddIni&amp;doWhat=add"/>
+            <forward name="addEdit" path="/jsp/dsp/md/supplier/SupplierAddEdit.jsp?method=doAddEditIni"/>
+            <forward name="view" path="/jsp/dsp/md/supplier/SupplierView.jsp?method=doView"/>
+            <forward name="begin" path="/jsp/dsp/md/supplier/SupplierMain.jsp"/>
+        </action>
+ 
+
+	  </action-mappings>
+    <!-- ========== End of Action Mapping Definitions ============================== -->
+	<message-resources key="dsp.md.supplier"  parameter="com.handao.dsp.md.supplier.web.MessageMapping"/>
+
+</struts-config>

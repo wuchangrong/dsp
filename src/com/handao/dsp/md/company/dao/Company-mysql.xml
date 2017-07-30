@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dsp.md.company.Company">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="CompanyVO" type="com.handao.dsp.md.company.vo.CompanyVO"/>
+
+
+  <!-- 如果resultmap对应具体的vo对象，则需要配置vo中int、long、float、double等类型字段的nullValue属性-->
+  <resultMap id="CompanyResult" class="CompanyVO">
+    <result property="CPN_ACCCLOSE_DAY" column="CPN_ACCCLOSE_DAY" nullValue="0" />
+    <result property="CPN_ACCOUNT_NO" column="CPN_ACCOUNT_NO" />
+    <result property="CPN_BANK" column="CPN_BANK" />
+    <result property="CPN_BEGIN_DATE" column="CPN_BEGIN_DATE" />
+    <result property="CPN_CALC_MODE" column="CPN_CALC_MODE" />
+        <result property="CPN_CALC_MODE_NAME" column="CPN_CALC_MODE_NAME" />
+    <result property="CPN_COMPANY_CODE" column="CPN_COMPANY_CODE" />
+    <result property="CPN_COMPANY_NAME" column="CPN_COMPANY_NAME" />
+    <result property="CPN_CREATED_BY" column="CPN_CREATED_BY" nullValue="0" />
+    <result property="CPN_CREATED_TIME" column="CPN_CREATED_TIME" />
+    <result property="CPN_CURRENT_DATE" column="CPN_CURRENT_DATE" />
+    <result property="CPN_CURRENT_MONTH" column="CPN_CURRENT_MONTH" />
+    <result property="CPN_DEFAULT_UNIT" column="CPN_DEFAULT_UNIT" />
+    <result property="CPN_LAST_UPD_BY" column="CPN_LAST_UPD_BY" nullValue="0" />
+    <result property="CPN_LAST_UPD_TIME" column="CPN_LAST_UPD_TIME" />
+    <result property="CPN_LEGAL_PERSON" column="CPN_LEGAL_PERSON" />
+    <result property="CPN_MODIFICATION_NUM" column="CPN_MODIFICATION_NUM" nullValue="0" />
+    <result property="CPN_PARENT_COMPANY" column="CPN_PARENT_COMPANY" nullValue="0" />
+    <result property="CPN_ROW_ID" column="CPN_ROW_ID" />
+    <result property="CPN_SHORT_CODE" column="CPN_SHORT_CODE" />
+    <result property="CPN_STATUS" column="CPN_STATUS" />
+    <result property="CPN_TAX_NO" column="CPN_TAX_NO" />
+    <result property="CPN_TAX_RATE" column="CPN_TAX_RATE" nullValue="0" />
+    <result property="CPN_PARENT_COMPANY_NAME" column="CPN_PARENT_COMPANY_NAME" />
+
+  </resultMap>
+ 
+
+
+  <statement id="[search-by-condition]" resultMap="CompanyResult">
+    <![CDATA[
+    SELECT CPN.ACCCLOSE_DAY CPN_ACCCLOSE_DAY,CPN.ACCOUNT_NO CPN_ACCOUNT_NO,CPN.BANK CPN_BANK,CPN.BEGIN_DATE CPN_BEGIN_DATE,CPN.CALC_MODE CPN_CALC_MODE,CPN.COMPANY_CODE CPN_COMPANY_CODE,CPN.COMPANY_NAME CPN_COMPANY_NAME,CPN.CREATED_BY CPN_CREATED_BY,CPN.CREATED_TIME CPN_CREATED_TIME,CPN.BIZ_DATE CPN_CURRENT_DATE,CPN.BIZ_MONTH CPN_CURRENT_MONTH,CPN.DEFAULT_UNIT CPN_DEFAULT_UNIT,CPN.LAST_UPD_BY CPN_LAST_UPD_BY,CPN.LAST_UPD_TIME CPN_LAST_UPD_TIME,CPN.LEGAL_PERSON CPN_LEGAL_PERSON,CPN.MODIFICATION_NUM CPN_MODIFICATION_NUM,CPN.PARENT_COMPANY CPN_PARENT_COMPANY,CPN.ROW_ID CPN_ROW_ID,CPN.SHORT_CODE CPN_SHORT_CODE,CPN.STATUS CPN_STATUS,CPN.TAX_NO CPN_TAX_NO,CPN.TAX_RATE CPN_TAX_RATE,CPN2.COMPANY_NAME CPN_PARENT_COMPANY_NAME,code.code_name CPN_CALC_MODE_NAME   
+    FROM MD_COMPANY CPN 
+    LEFT JOIN MD_COMPANY CPN2 ON CPN.PARENT_COMPANY = CPN2.ROW_ID
+    LEFT JOIN SM_CODE_LIST code ON code.code_value=CPN.CALC_MODE AND code.type_code='CALC_MODE' 
+    WHERE 1=1 
+    ]]>
+    <isNotEmpty prepend="and" property="CPN_COMPANY_NAME">
+      <![CDATA[CPN.COMPANY_NAME = #CPN_COMPANY_NAME#]]>
+    </isNotEmpty>
+    <![CDATA[
+    order by CPN.COMPANY_CODE asc
+    ]]>
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="CompanyResult">
+    <![CDATA[
+    SELECT CPN.ACCCLOSE_DAY CPN_ACCCLOSE_DAY,CPN.ACCOUNT_NO CPN_ACCOUNT_NO,CPN.BANK CPN_BANK,CPN.BEGIN_DATE CPN_BEGIN_DATE,CPN.CALC_MODE CPN_CALC_MODE,CPN.COMPANY_CODE CPN_COMPANY_CODE,CPN.COMPANY_NAME CPN_COMPANY_NAME,CPN.CREATED_BY CPN_CREATED_BY,CPN.CREATED_TIME CPN_CREATED_TIME,CPN.BIZ_DATE CPN_CURRENT_DATE,CPN.BIZ_MONTH CPN_CURRENT_MONTH,CPN.DEFAULT_UNIT CPN_DEFAULT_UNIT,CPN.LAST_UPD_BY CPN_LAST_UPD_BY,CPN.LAST_UPD_TIME CPN_LAST_UPD_TIME,CPN.LEGAL_PERSON CPN_LEGAL_PERSON,CPN.MODIFICATION_NUM CPN_MODIFICATION_NUM,CPN.PARENT_COMPANY CPN_PARENT_COMPANY,CPN.ROW_ID CPN_ROW_ID,CPN.SHORT_CODE CPN_SHORT_CODE,CPN.STATUS CPN_STATUS,CPN.TAX_NO CPN_TAX_NO,CPN.TAX_RATE CPN_TAX_RATE ,CPN2.COMPANY_NAME CPN_PARENT_COMPANY_NAME,code.code_name CPN_CALC_MODE_NAME    
+    FROM MD_COMPANY CPN 
+    LEFT JOIN MD_COMPANY CPN2 ON CPN.PARENT_COMPANY = CPN2.ROW_ID
+    LEFT JOIN SM_CODE_LIST code ON code.code_value=CPN.CALC_MODE AND code.type_code='CALC_MODE' 
+    WHERE 1=1 AND CPN.ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM MD_COMPANY 
+    WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="CompanyVO">
+    <![CDATA[
+    UPDATE MD_COMPANY
+    SET COMPANY_CODE=#CPN_COMPANY_CODE#,COMPANY_NAME=#CPN_COMPANY_NAME#,SHORT_CODE=#CPN_SHORT_CODE#,PARENT_COMPANY=#CPN_PARENT_COMPANY#,BEGIN_DATE=#CPN_BEGIN_DATE:DATE#,ACCCLOSE_DAY=#CPN_ACCCLOSE_DAY#,LEGAL_PERSON=#CPN_LEGAL_PERSON#,BANK=#CPN_BANK#,ACCOUNT_NO=#CPN_ACCOUNT_NO#,TAX_NO=#CPN_TAX_NO#,TAX_RATE=#CPN_TAX_RATE#,CALC_MODE=#CPN_CALC_MODE#,DEFAULT_UNIT=#CPN_DEFAULT_UNIT#,STATUS=#CPN_STATUS#,LAST_UPD_BY=#CPN_LAST_UPD_BY#,LAST_UPD_TIME=current_date,MODIFICATION_NUM=MODIFICATION_NUM+1 
+    WHERE ROW_ID=#CPN_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="CompanyVO">
+    <![CDATA[
+    INSERT INTO MD_ORG_UNIT(ROW_ID,UNIT_CODE,UNIT_NAME,SHORT_CODE,PARENT_UNIT,BEGIN_DATE,ACCCLOSE_DAY,LEGAL_PERSON,BANK,ACCOUNT_NO,TAX_NO,TAX_RATE,CALC_MODE,DEFAULT_UNIT,STATUS,CREATED_BY,LAST_UPD_BY,LAST_UPD_TIME,ORG_TYPE) 
+    VALUES(#CPN_ROW_ID#,#CPN_COMPANY_CODE#,#CPN_COMPANY_NAME#,#CPN_SHORT_CODE#,#CPN_PARENT_COMPANY#,#CPN_BEGIN_DATE:DATE#,#CPN_ACCCLOSE_DAY#,#CPN_LEGAL_PERSON#,#CPN_BANK#,#CPN_ACCOUNT_NO#,#CPN_TAX_NO#,#CPN_TAX_RATE#,#CPN_CALC_MODE#,#CPN_DEFAULT_UNIT#,#CPN_STATUS#,#CPN_CREATED_BY#,#CPN_LAST_UPD_BY#,current_date,'11')
+    ]]>
+  </statement>
+
+
+</sqlMap>

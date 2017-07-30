@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="common.userdesk.userdeskSet.userdeskSet.UserdeskSet">
+
+  <!-- Use type aliases to avoid typing the full classname every time. -->
+  <typeAlias alias="UserdeskSetVO" type="com.handao.platform.sm.userdesk.userdeskSet.vo.UserdeskSetVO"/>
+ 
+  <resultMap id="UserdeskSetResult" class="UserdeskSetVO">
+    <result property="m_ROW_ID" column="m_ROW_ID" nullValue="0"/>
+    <result property="m_CREATED_BY" column="m_CREATED_BY" nullValue="0" />
+    <result property="m_LAST_UPD_BY" column="m_LAST_UPD_BY" nullValue="0" />
+    <result property="m_GROUP_CODE" column="m_GROUP_CODE" />
+    <result property="m_GROUP_NAME" column="m_GROUP_NAME" />
+    <result property="m_LABEL" column="m_LABEL" />
+    <result property="m_DISP_NO" column="m_DISP_NO" nullValue="0" />
+    <result property="m_VISIABLE" column="m_VISIABLE" />
+    <result property="m_LINE_NUM" column="m_LINE_NUM" nullValue="0" />
+    <result property="m_COL_NUM" column="m_COL_NUM" nullValue="0" />
+    <result property="m_STATUS" column="m_STATUS" />
+    <result property="m_ROLE_ID" column="m_ROLE_ID" nullValue="0" />
+
+  </resultMap>
+
+  <statement id="[search-by-condition]" resultMap="UserdeskSetResult">
+    <![CDATA[
+    SELECT m.ROW_ID m_ROW_ID,m.CREATED_BY m_CREATED_BY,m.LAST_UPD_BY m_LAST_UPD_BY,
+    m.GROUP_CODE m_GROUP_CODE,m.GROUP_NAME m_GROUP_NAME,m.LABEL m_LABEL,
+    m.DISP_NO m_DISP_NO,m.VISIABLE m_VISIABLE,m.LINE_NUM m_LINE_NUM,m.
+    COL_NUM m_COL_NUM,m.STATUS m_STATUS,m.ROLE_ID m_ROLE_ID 
+    FROM SM_USER_DESK_GROUP m 
+    WHERE 1=1
+    ]]>
+    
+    <isNotEmpty prepend="and" property="m_GROUP_CODE">
+      <![CDATA[M.GROUP_CODE = #m_GROUP_CODE#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="m_GROUP_NAME">
+      <![CDATA[M.GROUP_NAME = #m_GROUP_NAME#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="m_LABEL">
+      <![CDATA[M.LABEL = #m_LABEL#]]>
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="m_ROLE_ID">
+      <![CDATA[M.ROLE_ID = #m_ROLE_ID#]]>
+    </isNotEmpty>
+   
+      <![CDATA[ORDER BY M.DISP_NO]]>
+ 
+
+  </statement>
+
+  <statement id="[find-by-id]" parameterClass="long" resultMap="UserdeskSetResult">
+    <![CDATA[
+    SELECT m.ROW_ID m_ROW_ID,m.CREATED_BY m_CREATED_BY,m.LAST_UPD_BY m_LAST_UPD_BY,m.GROUP_CODE m_GROUP_CODE,m.GROUP_NAME m_GROUP_NAME,m.LABEL m_LABEL,m.DISP_NO m_DISP_NO,m.VISIABLE m_VISIABLE,m.LINE_NUM m_LINE_NUM,m.COL_NUM m_COL_NUM,m.STATUS m_STATUS,m.ROLE_ID m_ROLE_ID 
+    FROM SM_USER_DESK_GROUP m 
+    WHERE 1=1 AND m.ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[delete-by-id]" parameterClass="long">
+    <![CDATA[
+    DELETE FROM SM_USER_DESK_GROUP 
+    WHERE ROW_ID=#value#
+    ]]>
+  </statement>
+
+  <statement id="[update-by-vo]" parameterClass="UserdeskSetVO">
+    <![CDATA[
+    UPDATE SM_USER_DESK_GROUP
+    SET LAST_UPD_TIME=CURRENT TIMESTAMP,CREATED_BY=#m_CREATED_BY#,LAST_UPD_BY=#m_LAST_UPD_BY#,GROUP_CODE=#m_GROUP_CODE#,GROUP_NAME=#m_GROUP_NAME#,LABEL=#m_LABEL#,DISP_NO=#m_DISP_NO#,VISIABLE=#m_VISIABLE#,LINE_NUM=#m_LINE_NUM#,COL_NUM=#m_COL_NUM#,STATUS=#m_STATUS#,ROLE_ID=#m_ROLE_ID#
+    WHERE ROW_ID=#m_ROW_ID#
+    ]]>
+  </statement>
+
+  <statement id="[insert-by-vo]" parameterClass="UserdeskSetVO">
+    <![CDATA[
+    INSERT INTO SM_USER_DESK_GROUP(ROW_ID,CREATED_BY,LAST_UPD_BY,GROUP_CODE,GROUP_NAME,LABEL,DISP_NO,VISIABLE,LINE_NUM,COL_NUM,STATUS,ROLE_ID) 
+    VALUES(#m_ROW_ID#,#m_CREATED_BY#,#m_LAST_UPD_BY#,#m_GROUP_CODE#,#m_GROUP_NAME#,#m_LABEL#,#m_DISP_NO#,#m_VISIABLE#,#m_LINE_NUM#,#m_COL_NUM#,#m_STATUS#,#m_ROLE_ID#)
+    ]]>
+  </statement>
+  
+  <statement id="[search-model]" parameterClass="UserdeskSetVO">
+    <![CDATA[
+    INSERT INTO SM_USER_DESK_GROUP(ROW_ID,CREATED_BY,LAST_UPD_BY,GROUP_CODE,GROUP_NAME,LABEL,DISP_NO,VISIABLE,LINE_NUM,COL_NUM,STATUS,ROLE_ID) 
+    VALUES(#m_ROW_ID#,#m_CREATED_BY#,#m_LAST_UPD_BY#,#m_GROUP_CODE#,#m_GROUP_NAME#,#m_LABEL#,#m_DISP_NO#,#m_VISIABLE#,#m_LINE_NUM#,#m_COL_NUM#,#m_STATUS#,#m_ROLE_ID#)
+    ]]>
+  </statement>
+  
+  
+  <!-- 取桌面设置的模块组 -->
+  <statement id="[search-group-by-userid]" parameterClass="java.util.Map" resultClass="java.util.HashMap">
+    <![CDATA[
+    SELECT M.ROW_ID M_ROW_ID,
+    M.GROUP_CODE M_GROUP_CODE,M.GROUP_NAME M_GROUP_NAME,M.LABEL M_LABEL,
+    M.DISP_NO M_DISP_NO
+    ,M.ROLE_ID M_ROLE_ID 
+    FROM SM_USER_DESK_GROUP M 
+    WHERE 1=1 AND M.VISIABLE='Y' 
+    ]]>
+
+    <isNotEmpty prepend="and" property="m_ROLE_ID">
+      <![CDATA[M.ROLE_ID = #m_ROLE_ID#]]>
+    </isNotEmpty>  
+      <![CDATA[ORDER BY M.DISP_NO]]>
+  </statement>
+  
+  
+  <statement id="[search-program-by-group]" parameterClass="java.util.Map" resultClass="java.util.HashMap">
+    <![CDATA[
+    SELECT D.ROW_ID D_ROW_ID,D.MODULE_ID D_MODULE_ID,
+    D.LABEL D_LABEL,D.GROUP_ID D_GROUP_ID ,A.START_PROGRAM A_START_PROGRAM,A.PICTURE A_PICTURE
+    FROM SM_USER_DESK_PROGRAM D 
+    LEFT JOIN SM_PROGRAM A ON A.ROW_ID=D.MODULE_ID
+    WHERE 1=1 
+    ]]>    
+    <isNotEmpty prepend="and" property="d_GROUP_ID">
+      <![CDATA[D.GROUP_ID = #d_GROUP_ID#]]>
+    </isNotEmpty>  
+      <![CDATA[ORDER BY D.DISP_NO]]>
+  </statement>
+   
+  
+  <statement id="[search-message-by-company]" parameterClass="java.util.Map" resultClass="java.util.HashMap">
+    <![CDATA[
+    select row_id,company_id , release_date ,title from SM_BULLETIN     
+	WHERE DELETED_FLAG = '0' and company_id in (
+	 	select row_id  from md_org_unit  where org_type='11' and status='1' and (row_id= #CompanyID# or parent_unit=#CompanyID#)
+	 	union 
+	 	select b.row_id  from md_org_unit a
+	 	left join md_org_unit b on b.row_id=a.parent_unit and b.org_type='11' and b.status='1'
+	 	where a.row_id=#CompanyID#
+ 	)
+    ]]>
+      <![CDATA[ORDER BY release_date desc]]>
+  </statement>
+  
+  <!-- 查询日报 -->
+  <statement id="[search-day-report]" parameterClass="java.util.Map" resultClass="java.util.HashMap">
+    <![CDATA[
+     SELECT REPORT_DATE ,COMPANY_ID 
+     FROM MR_REPORT_DAY 
+     where IS_PUBLISH='Y' AND SUBSTR(TO_CHAR(REPORT_DATE,'YYYY-MM-DD'),1,4)=#queryYear#
+     ORDER BY REPORT_DATE DESC     
+    ]]>
+  </statement>
+  
+  <!-- 查询周报 -->
+  <statement id="[search-week-report]" parameterClass="java.util.Map" resultClass="java.util.HashMap">
+    <![CDATA[
+    SELECT WEEK_INDEX,WEEK_START,WEEK_START,WEEK_END ,COMPANY_ID,
+    '['||SUBSTR(TO_CHAR(WEEK_INDEX),1,4)||'年第'||SUBSTR(TO_CHAR(WEEK_INDEX),5,2)||'周]' YEAR_WEEK 
+	FROM MR_REPORT_WEEK 
+	where IS_PUBLISH='Y' AND SUBSTR(TO_CHAR(WEEK_INDEX),1,4)=#queryYear#
+	ORDER BY WEEK_INDEX DESC      
+    ]]>
+  </statement>
+  
+  
+  <!-- 查询专项报告 -->
+  <statement id="[search-upload-report]" parameterClass="java.util.Map" resultClass="java.util.HashMap">
+    <![CDATA[
+    	SELECT ROW_ID,TITLE,PERIOD_DATE ,TO_CHAR(OPERATE_TIME,'yyyy-MM-dd')OPERATE_TIME  
+    	FROM MR_UPLOAD_REPORT
+    	WHERE IS_PUBLISH='Y' AND  FILE_CONTENT IS NOT NULL
+		ORDER BY OPERATE_TIME DESC 
+		FETCH FIRST 6 ROWS ONLY      
+    ]]>
+  </statement>
+  
+  <!-- 查询代办任务试图的消息 -->
+  <statement id="[search-msg-by-userid]" parameterClass="java.util.Map" resultClass="java.util.HashMap">
+    <![CDATA[
+	   SELECT USER_ID,TITLE,MODULE
+	   FROM V_MC_TASK
+	   WHERE USER_ID=#userID#
+       LIMIT 9		 
+    ]]>
+  </statement>
+  
+  <!-- 查询消息中心的消息 -->
+  <statement id="[search-msg-by-row_id]" parameterClass="java.util.Map" resultClass="java.util.HashMap">
+    <![CDATA[
+	    SELECT a.ROW_ID,a.SUBJECT , a.CONTENT , a.SEND_DATE,a.SEND_TIME ,
+		   TO_CHAR(a.SEND_DATE,'yyyy-mm-dd')||' '||SUBSTR(a.SEND_TIME,1,5) SEND_DAY_TIME
+		FROM IM_MESSAGE_QUEUES a
+		WHERE a.ROW_ID=#row_id#
+		ORDER BY a.SEND_DATE DESC,a.SEND_TIME DESC 
+    ]]>
+  </statement>
+  
+  <!-- 查询消息中心的消息 (弹出框)-->
+  <statement id="[search-msg-dia]" parameterClass="java.util.Map" resultClass="java.util.HashMap">
+    <![CDATA[
+	    SELECT a.ROW_ID,a.SUBJECT , a.CONTENT , a.SEND_DATE,a.SEND_TIME , b.INNER_USER_ID,b.PERSON_NAME ,
+		   TO_CHAR(a.SEND_DATE,'yyyy-mm-dd')||' '||SUBSTR(a.SEND_TIME,1,5) SEND_DAY_TIME
+		FROM IM_MESSAGE_QUEUES a
+		LEFT JOIN IM_SEND_ADDRESS b on a.ROW_ID=b.SEND_MESSAGE_ID
+		WHERE b.INNER_USER_ID=#userID# AND a.SEND_DATE=CURRENT DATE 
+			  AND CAST(a.SEND_TIME AS TIME)<=CURRENT TIME AND CAST(a.SEND_TIME AS TIME)>=CURRENT TIME -10 MINUTES
+			  AND INNER_YN='Y'
+		ORDER BY a.SEND_DATE DESC,a.SEND_TIME DESC
+		FETCH FIRST 3 ROWS ONLY     
+    ]]>
+  </statement>
+  
+  <!-- 删除发送地址的数据 -->
+  <statement id="[delete-msg-address]" parameterClass="java.util.Map" >
+    <![CDATA[
+	    DELETE FROM IM_SEND_ADDRESS
+	    WHERE SEND_MESSAGE_ID=#message_id# AND INNER_USER_ID=#empID#
+    ]]>
+  </statement>
+  
+  <!-- 查询发送地址的数据 -->
+  <statement id="[search-msg-address]" parameterClass="java.util.Map" resultClass="java.util.HashMap">
+    <![CDATA[
+	    SELECT ROW_ID 
+	    FROM IM_SEND_ADDRESS
+	    WHERE SEND_MESSAGE_ID=#message_id#
+    ]]>
+  </statement>
+  
+  <!-- 删除消息队列的数据 -->
+  <statement id="[delete-msg-queue]" parameterClass="java.util.Map" >
+    <![CDATA[
+	    DELETE FROM IM_MESSAGE_QUEUES
+	    WHERE ROW_ID=#message_id#
+    ]]>
+  </statement>
+  
+  <!-- 修改消息传递日志的数据为已读 -->
+  <statement id="[update-msg-address-arc]" parameterClass="java.util.Map" >
+    <![CDATA[
+	    UPDATE  IM_SEND_ADDRESS_ARC
+	    SET INNER_STATUS_YN='Y'
+	    WHERE SEND_MESSAGE_ID=#message_id# AND INNER_USER_ID=#empID#
+    ]]>
+  </statement>
+  
+  <!-- 修改消息归档的数据为已读 -->
+  <statement id="[update-msg-arc]" parameterClass="java.util.Map" >
+    <![CDATA[
+	    UPDATE  IM_MESSAGE_ARC
+	    SET STATUS_FLAG='2'
+	    WHERE ROW_ID=#message_id# 
+    ]]>
+  </statement>
+
+</sqlMap>
